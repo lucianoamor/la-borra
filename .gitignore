@@ -1,6 +1,5 @@
 bower_components
 node_modules
-app
 .tmp
 .sass-cache
 TODO.md
