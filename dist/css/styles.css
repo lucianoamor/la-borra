@@ -1,0 +1,258 @@
+body {
+    font-family: 'Open Sans', sans-serif;
+    font-size: 13px;
+}
+h1, .h1, h2, .h2, h3, .h3 {
+    margin-top: 10px;
+}
+.navbar-default {
+    background-color: #E0E0E0;
+}
+nav {
+    background: url('../images/bg.gif') no-repeat bottom left;
+}
+.navbar-default .navbar-brand {
+    color: #000;
+}
+.navbar-brand {
+    font-family: 'Ropa Sans', sans-serif;
+    font-size: 3em;
+    color: #000;
+}
+.dropdown-menu > li > a {
+    font-size: 13px;
+}
+.navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:hover, .navbar-default .navbar-nav > .active > a:focus {
+    background-color: transparent;
+}
+
+.tile {
+    border: 5px #fff solid;
+    padding: 10px 15px;
+}
+
+.competencia {
+    background-color: #BF7000;
+    color: #fff;
+    height: 89px;
+}
+.competencia p {
+    font-family: 'Ropa Sans', sans-serif;
+    font-size: 2em;
+    line-height: 1em;
+    margin: 0;
+    padding-top: 3px;
+}
+.competencia p.fecha {
+    font-size: 1.2em;
+    opacity: .7;
+    padding-top: 8px;
+}
+.filtros {
+    background-color: #007D9F;
+    color: #fff;
+}
+.filtros label {
+    font-weight: normal;
+}
+.filtros .form-control {
+    width: 100%;
+    padding: 6px;
+}
+
+
+.tabla {
+    padding: 5px;
+    border: 0;
+}
+.tabla th {
+    text-align: center;
+}
+.tabla table > thead > tr > th {
+    border: 0;
+    background-color: #ddd;
+}
+.tabla th span {
+    font-weight: normal;
+    color: #999;
+}
+.tabla th.resultado span,
+.tabla th.prediccion span {
+    color: #ddd;
+}
+.tabla th.th-col {
+    width: 10%;
+}
+.tabla .prediccion {
+    background-color: #EC971F;
+    color: #fff;
+    font-weight: bold;
+}
+.tabla .resultado {
+    background-color: #C9302C;
+    color: #fff;
+    font-weight: bold;
+}
+.tabla table > thead > tr > th.prediccion {
+    background-color: #CF7900;
+}
+.tabla table > thead > tr > th.resultado {
+    background-color: #9F0400;
+}
+.tabla tbody tr td {
+    vertical-align: middle;
+    font-size: 14px;
+    padding: 5px;
+}
+.tabla td .img {
+    width: 60%;
+    border: 5px solid;
+    border-radius: 50%;
+    cursor: help;
+}
+.tabla td .img.fpv {
+    border-color: #4682B4;
+}
+.tabla td .img.pro {
+    border-color: #FFD300;
+}
+.tabla td .img.fr {
+    border-color: #008000;
+}
+.tabla td .img.ucr {
+    border-color: #FF0000;
+}
+.tabla td .img.fap {
+    border-color: #800080;
+}
+.tabla td .img.blanco {
+    border-color: #ddd;
+}
+.tabla tfoot h5 {
+    color: #888;
+    margin-bottom: 3px;
+    font-weight: bold;
+}
+.tabla td p.img {
+    width: 50px;
+    height: 50px;
+}
+
+.tabla tfoot .table tbody tr td {
+    font-size: 13px;
+    border: 0;
+    padding: 0;
+}
+.tabla tfoot .table tbody tr td.ref {
+    font-weight: bold;
+    width: 10%;
+}
+.tabla tfoot .table tbody tr td.ref.prediccion {
+    background-color: #fff;
+    color: #EC971F;
+}
+.tabla tfoot .table tbody tr td.ref.resultado {
+    background-color: #fff;
+    color: #C9302C;
+}
+.tabla .table,
+.tabla tfoot .table {
+    margin-bottom: 0;
+}
+
+.tabla .table-hover > tbody > tr:hover,
+.tabla .table-hover > tbody > tr.hover {
+    background-color: #E1FFDF;
+}
+
+.grafico {
+    padding: 5px;
+    border: 0;
+}
+
+.encuestas {
+    background-color: #015F00;
+    color: #fff;
+    overflow: hidden;
+    padding: 10px 15px;
+    margin-top: 6px;
+}
+.encuestas span {
+    font-family: 'Ropa Sans', sans-serif;
+    font-size: 2.5em;
+    line-height: 1em;
+}
+.encuestas p {
+    margin: 0;
+}
+.encuestas p.separador {
+    clear: both;
+    height: 10px;
+}
+.encuestas table {
+    margin-bottom: 0;
+}
+.encuestas .table-hover > tbody > tr:hover {
+    background-color: #019F00;
+}
+.encuestas a i.icon-link {
+    color: #fff;
+}
+.encuestas a:hover i.icon-link {
+    color: #ccc;
+}
+.popover small {
+    color: #666;
+    font-size: .8em;
+}
+
+/* grafico */
+.axis path,
+.axis line {
+    shape-rendering: crispEdges;
+    fill: none;
+    stroke-width: 1px;
+}
+.axis path {
+    stroke: #666;
+}
+.axis line {
+    stroke: #999;
+}
+.resultado {
+    stroke: #333;
+    stroke-width: 2px;
+}
+
+.d3-tip {
+  padding: 12px;
+  background: #eee;
+  border-radius: 2px;
+  text-align: center;
+  /*border: 1px solid #fff;*/
+  box-shadow: 0px 0px 2px 2px rgba(204,204,204,1);
+}
+
+.d3-tip strong {
+    font-size: 1.5em;
+    font-family: 'Ropa Sans', sans-serif;
+}
+
+/* Creates a small triangle extender for the tooltip */
+.d3-tip:after {
+  box-sizing: border-box;
+  display: inline;
+  font-size: 10px;
+  width: 100%;
+  line-height: 1;
+  color: #ddd;
+  content: "\25BC";
+  position: absolute;
+  text-align: center;
+}
+/* Style northward tooltips differently */
+.d3-tip.n:after {
+  margin: -1px 0 0 0;
+  top: 100%;
+  left: 0;
+}

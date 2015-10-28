@@ -1,0 +1,25 @@
+{
+  "name": "la-borra",
+  "version": "0.0.1",
+  "dependencies": {
+    "jquery": "~1",
+    "bootstrap-sass-official": "~3",
+    "font-awesome": "~4",
+    "html5shiv": "~3.7",
+    "d3-tip": "~0.6"
+  },
+  "devDependencies": {},
+  "homepage": "https://github.com/lucianoamor/la-borra",
+  "authors": [
+    "Luciano Amor <lucianoamor@gmail.com>"
+  ],
+  "main": "index.php",
+  "license": "GNU GPL",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "name": "la-borra",
+  "version": "0.0.1",
+  "dependencies": {
+    "d3": "^3.5"
+  },
+  "devDependencies": {
+    "grunt": "^0.4",
+    "grunt-contrib-clean": "^0.6",
+    "grunt-contrib-compass": "^1.0",
+    "grunt-contrib-concat": "^0.5",
+    "grunt-contrib-connect": "^0.9",
+    "grunt-contrib-copy": "^0.7",
+    "grunt-contrib-jshint": "^0.10",
+    "grunt-contrib-uglify": "^0.6",
+    "grunt-contrib-watch": "^0.6",
+    "grunt-contrib-htmlmin": "^0.3",
+    "grunt-contrib-imagemin": "^0.9",
+    "grunt-contrib-cssmin": "^0.10",
+    "grunt-jscs": "^0.8",
+    "grunt-open": "^0.2",
+    "grunt-usemin": "^2.6",
+    "load-grunt-tasks": "^1.0",
+    "connect-livereload": "^0.5",
+    "time-grunt": "^1.0",
+    "jshint-stylish": "^1.0"
+  },
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "main": "index.php",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lucianoamor/la-borra.git"
+  },
+  "author": "Luciano Amor <lucianoamor@gmail.com>",
+  "license": "GNU GPL",
+  "bugs": {
+    "url": "https://github.com/lucianoamor/la-borra/issues"
+  },
+  "homepage": "https://github.com/lucianoamor/la-borra#readme",
+  "description": ""
+}

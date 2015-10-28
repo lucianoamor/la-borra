@@ -1,0 +1,10 @@
+{
+  "generator-web": {
+    "appName": "la-borra",
+    "includeModernizr": false,
+    "includeUnderscore": false,
+    "includeFontAwesome": true,
+    "includeRespond": false,
+    "includeHtml5shiv": true
+  }
+}
