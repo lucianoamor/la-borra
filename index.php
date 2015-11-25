@@ -1,166 +1,117 @@
-<?php header('Content-Type: text/html; charset=UTF-8'); ?>
-<!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="utf-8" />
-<title>La Borra</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<!--[if lt IE 9]>
-<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-<![endif]-->
-<!--[if gt IE 9]>
-<meta http-equiv="X-UA-Compatible" content="IE=9">
-<![endif]-->
-<link href="css/bootstrap.min.css" rel="stylesheet" />
-<link href="css/styles.css" rel="stylesheet" />
-<link rel="shortcut icon" href="favicon.ico" />
-<link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
-<link href='https://fonts.googleapis.com/css?family=Ropa+Sans|Open+Sans' rel='stylesheet' type='text/css'>
-</head>
-<body>
-<header>
-    <nav class="navbar navbar-default">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="index.php">La Borra 2.0</a>
-            </div>
-            <div class="collapse navbar-collapse">
-                <ul class="nav navbar-nav">
-                    <li class="active"><a href="index.php">Argentina</a></li>
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Otros países <span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="#">Brasil</a></li>
-                            <li><a href="#">Grecia</a></li>
-                            <li><a href="#">EEUU</a></li>
-                            <li><a href="#">Paraguay</a></li>
-                            <li><a href="#">Uruguay</a></li>
-                        </ul>
-                    </li>
-                </ul>
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a href="about.php">¿Qué es La Borra?</a></li>
-                    <li><a href="help.php">Ayuda</a></li>
-                    <li><a href="credits.php">Créditos</a></li>
-                    <li><a href="http://www.github.com/lucianoamor/la-borra" target="_blank"><i class="icon-github icon-large"></i></a></li>
-                </ul>
-            </div><!-- /.navbar-collapse -->
-        </div><!-- /.container-fluid -->
-    </nav>
-</header>
-<div class="container">
+<?php
+header('Content-Type: text/html; charset=UTF-8');
+include("admin/params.php");
+include("admin/bd.php");
+include("admin/func.php");
+$bd = conectar();
+$elecciones = array();
+$sql = "select id, idAT, nombre, fecha from elecciones order by fecha desc, nombre asc";
+$res = $bd->query($sql);
+while($fila = $res->fetch_assoc()) {
+    $elecciones[$fila["id"]] = array(
+        "nombre" =>$fila["nombre"],
+        "idAT"   => $fila["idAT"],
+        "fecha"  =>Funciones::fecha($fila["fecha"])
+    );
+}
+if(count($elecciones) == 0) {
+    $elecciones[0] = array(
+        "nombre" =>"",
+        "idAT"   => "",
+        "fecha"  =>""
+    );
+}
+// valida id
+$idE = 0;
+if(isset($_GET["e"])) {
+    $idE = $bd->real_escape_string($_GET["e"]);
+    if(!filter_var(filter_var($idE, FILTER_SANITIZE_NUMBER_INT), FILTER_VALIDATE_INT) || !in_array($idE, array_keys($elecciones)))
+        $idE = 0;
+}
+if($idE == 0)
+    $idE = current(array_keys($elecciones));
+$idEAT = $elecciones[$idE]["idAT"];
+
+$fechas = array();
+$sql = "select fecha from encuestas where eleccion = '$idEAT' order by fecha asc";
+$res = $bd->query($sql);
+while($fila = $res->fetch_assoc())
+    $fechas[$fila["fecha"]] = Funciones::fecha($fila["fecha"]);
+
+$poblaciones = array();
+$niveles = array("País"=>1, "Región"=>2, "Provincia"=>3, "Partido"=>4, "Localidad"=>5);
+$sql = "select p.nombre, p.nivel, p.idAT from encuestas as e left join poblacion as p on e.poblacion = p.idAT where e.eleccion = '$idEAT' order by p.nombre asc";
+$res = $bd->query($sql);
+while($fila = $res->fetch_assoc()) {
+    $poblaciones[$niveles[$fila["nivel"]]][] = array(
+        "nombre"=>$fila["nombre"],
+        "idAT"=>$fila["idAT"];
+    );
+}
+
+include("header.php");
+?>
     <div class="row">
         <div class="col-sm-6 tile competencia">
             <div class="row">
-                <div class="col-xs-10">
-                    <p class="fecha">09/08/2015</p>
-                    <p>PASO Presidente</p>
-                </div>
-                <div class="col-xs-2">
-                    <button type="button" class="btn btn-warning btn-lg pull-right"><i class="icon-chevron-sign-down icon-2x"></i></button>
+                <div class="col-xs-12">
+                    <div type="role" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <div class="row">
+                            <div class="col-xs-10">
+                                <p class="fecha"><?php echo $elecciones[$idE]["fecha"] ?></p>
+                                <p><?php echo $elecciones[$idE]["nombre"] ?></p>
+                            </div>
+                            <div class="col-xs-2">
+                                <i class="icon-chevron-sign-down icon-2x btn btn-warning btn-lg btn-eleccion pull-right"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <ul class="dropdown-menu">
+<?php
+foreach ($elecciones as $k => $v) {
+    if($k == $idE)
+        continue;
+?>
+                        <li><a href="?e=<?php echo $k ?>"><span><?php echo $v["fecha"] ?></span> <?php echo $v["nombre"] ?></a></li>
+<?php
+}
+?>
+                    </ul>
                 </div>
             </div>
         </div>
         <div class="col-sm-6 tile filtros">
             <form class="form-inline">
                 <div class="row">
-                    <div class="col-xs-4">
+                    <div class="col-xs-6">
                         <div class="form-group">
                             <label for="from_date">Desde fecha:</label>
                             <select class="form-control" id="from_date">
-                                <option value="-1">Todas</option>
-                                <option value="2015-01-23">23/01/2015</option>
-                                <option value="2015-02-13">13/02/2015</option>
-                                <option value="2015-03-03">03/03/2015</option>
-                                <option value="2015-03-09">09/03/2015</option>
-                                <option value="2015-03-20">20/03/2015</option>
-                                <option value="2015-04-01">01/04/2015</option>
-                                <option value="2015-04-15">15/04/2015</option>
-                                <option value="2015-04-16">16/04/2015</option>
-                                <option value="2015-04-19">19/04/2015</option>
-                                <option value="2015-04-26">26/04/2015</option>
-                                <option value="2015-04-27">27/04/2015</option>
-                                <option value="2015-05-04">04/05/2015</option>
-                                <option value="2015-05-06">06/05/2015</option>
-                                <option value="2015-05-07">07/05/2015</option>
-                                <option value="2015-05-08">08/05/2015</option>
-                                <option value="2015-05-11">11/05/2015</option>
-                                <option value="2015-05-13">13/05/2015</option>
-                                <option value="2015-05-14">14/05/2015</option>
-                                <option value="2015-05-15">15/05/2015</option>
-                                <option value="2015-05-20">20/05/2015</option>
-                                <option value="2015-05-27">27/05/2015</option>
-                                <option value="2015-05-28">28/05/2015</option>
-                                <option value="2015-05-29">29/05/2015</option>
-                                <option value="2015-05-30">30/05/2015</option>
-                                <option value="2015-05-31">31/05/2015</option>
-                                <option value="2015-06-01">01/06/2015</option>
-                                <option value="2015-06-02">02/06/2015</option>
-                                <option value="2015-06-04">04/06/2015</option>
-                                <option value="2015-06-05">05/06/2015</option>
-                                <option value="2015-06-10">10/06/2015</option>
-                                <option value="2015-06-11">11/06/2015</option>
-                                <option value="2015-06-12">12/06/2015</option>
-                                <option value="2015-06-14">14/06/2015</option>
-                                <option value="2015-06-15">15/06/2015</option>
-                                <option value="2015-06-16">16/06/2015</option>
-                                <option value="2015-06-17">17/06/2015</option>
-                                <option value="2015-06-19">19/06/2015</option>
-                                <option value="2015-06-22">22/06/2015</option>
-                                <option value="2015-06-23">23/06/2015</option>
-                                <option value="2015-06-25">25/06/2015</option>
-                                <option value="2015-06-26">26/06/2015</option>
-                                <option value="2015-06-27">27/06/2015</option>
-                                <option value="2015-06-28">28/06/2015</option>
-                                <option value="2015-06-29">29/06/2015</option>
-                                <option value="2015-07-01">01/07/2015</option>
-                                <option value="2015-07-02">02/07/2015</option>
-                                <option value="2015-07-03">03/07/2015</option>
-                                <option value="2015-07-06">06/07/2015</option>
-                                <option value="2015-07-07">07/07/2015</option>
-                                <option value="2015-07-08">08/07/2015</option>
-                                <option value="2015-07-09">09/07/2015</option>
-                                <option value="2015-07-10">10/07/2015</option>
-                                <option value="2015-07-11">11/07/2015</option>
-                                <option value="2015-07-12">12/07/2015</option>
-                                <option value="2015-07-13">13/07/2015</option>
-                                <option value="2015-07-15">15/07/2015</option>
-                                <option value="2015-07-17">17/07/2015</option>
-                                <option value="2015-07-18">18/07/2015</option>
-                                <option value="2015-07-19">19/07/2015</option>
-                                <option value="2015-07-20">20/07/2015</option>
-                                <option value="2015-07-22">22/07/2015</option>
-                                <option value="2015-07-23">23/07/2015</option>
-                                <option value="2015-07-24">24/07/2015</option>
-                                <option value="2015-07-25">25/07/2015</option>
-                                <option value="2015-07-26">26/07/2015</option>
-                                <option value="2015-07-28">28/07/2015</option>
-                                <option value="2015-07-29">29/07/2015</option>
-                                <option value="2015-07-30">30/07/2015</option>
-                                <option value="2015-07-31">31/07/2015</option>
-                                <option value="2015-08-01">01/08/2015</option>
-                                <option value="2015-08-02">02/08/2015</option>
-                                <option value="2015-08-04">04/08/2015</option>
-                                <option value="2015-08-05">05/08/2015</option>
-                                <option value="2015-08-06">06/08/2015</option>
-                                <option value="2015-08-09">09/08/2015</option>
+                                <option value="0000-00-00">Todas</option>
+<?php
+foreach ($fechas as $k => $v) {
+?>
+                                <option value="<?php echo $k ?>"><?php echo $v ?></option>
+<?php
+}
+?>
                             </select>
                         </div>
                     </div>
-                    <div class="col-xs-4">
+                    <div class="col-xs-6">
                         <div class="form-group">
                             <label for="poblacion">Población:</label>
                             <select class="form-control" id="poblacion">
-                                <option value="-1">Todas</option>
+                                <option value="0">Todas</option>
+<?php
+foreach ($poblaciones as $k => $v) {
+?>
                                 <optgroup label="País">
                                     <option value="1">Nacional</option>
                                 </optgroup>
+<?php
+}
+?>
                                 <optgroup label="Región">
                                     <option value="2">CABA + GBA</option>
                                     <option value="2">CABA + PBA</option>
@@ -192,31 +143,6 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-xs-4">
-                        <div class="form-group">
-                            <label for="encuestadora">Encuestadora:</label>
-                            <select class="form-control" id="encuestadora">
-                                <option value="-1">Todas</option>
-                                <option value="2">Analogías</option>
-                                <option value="2">ARESCO</option>
-                                <option value="2">Carlos Fara y Asociados</option>
-                                <option value="2">CEOP</option>
-                                <option value="2">CHM</option>
-                                <option value="2">Circuitos</option>
-                                <option value="2">Giacobbe & Asociados</option>
-                                <option value="2">González y Valladares</option>
-                                <option value="2">Ibarómetro</option>
-                                <option value="2">KNACK</option>
-                                <option value="2">NN</option>
-                                <option value="2">Nueva Comunicación</option>
-                                <option value="2">Opinión Pública Servicios y Mercados</option>
-                                <option value="2">Query</option>
-                                <option value="2">Raul Aragón y Asociados</option>
-                                <option value="2">Ricardo Rouvier y Asociados</option>
-                                <option value="2">Wonder</option>
-                            </select>
-                        </div>
-                    </div>
                 </div>
             </form>
         </div>
@@ -241,7 +167,7 @@
                 <tr>
                     <td class="text-center">
                         <!-- <strong>Daniel Scioli</strong><br/> -->
-                        <img src="https://dl.airtable.com/KOySa25oS120KwCZAaCX_scioli.jpg" title="Daniel Scioli" class="img fpv" data-content="<small>FPV</small>" data-clase="DanielScioli" />
+                        <img src="https://dl.airtable.com/KOySa25oS120KwCZAaCX_scioli.jpg" title="Daniel Scioli" alt="Daniel Scioli" class="img fpv" data-content="<small>FPV</small>" data-clase="DanielScioli" />
                         <!-- <br/>FPV -->
                     </td>
                     <td class="text-center">30</td>
@@ -485,11 +411,14 @@
         </div>
     </div>
 </div>
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script>
+var idE = '?e=<?php echo $idE ?>';
+</script>
+<script src="js/jquery-1.11.3.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
+<script src="js/d3.min.js"></script>
 <script src="js/d3-tip.js"></script>
-<script src="js/data-paso2015.js"></script>
+<script src="data/<?php echo $idE ?>.json"></script>
 <script src="js/chart.js"></script>
 <script>
 $('.img').popover({

@@ -1,4 +1,10 @@
-var margin  = {top: 5, right: 10, bottom: 30, left: 40};
+// url > html5 browsers
+if(location.search === '' && typeof history.replaceState !== 'undefined') {
+    history.replaceState({}, '', location.protocol + '//' + location.host + location.pathname + idE);
+}
+
+// d3
+var margin  = {top: 5, right: 10, bottom: 60, left: 40};
     width   = 670,
     height  = 550,
     radio   = 4,
@@ -22,14 +28,14 @@ var margin  = {top: 5, right: 10, bottom: 30, left: 40};
     d3.helper = {};
 
 data.forEach(function(d) {
-    d.date = format.parse(d.date);
+    d.fecha = format.parse(d.fecha);
 });
 
 var x = d3.time.scale()
-   .domain(d3.extent(data, function(d) { return d.date; }))
+   .domain(d3.extent(data, function(d) { return d.fecha; }))
    .range([radio, width - margin.right - margin.left]);
 
-var max = d3.max(data, function(d) { return d.result; });
+var max = d3.max(data, function(d) { return d.resultado; });
 var upper = max + yExtra;
 var y = d3.scale.linear()
     .domain([0, upper])
@@ -37,7 +43,7 @@ var y = d3.scale.linear()
 
 var xAxis = d3.svg.axis()
     .scale(x)
-    .tickFormat(myFormatters.timeFormat("%d/%m"))
+    .tickFormat(myFormatters.timeFormat("%d/%m/%Y"))
     .orient("bottom");
 
 var yAxis = d3.svg.axis()
@@ -64,7 +70,7 @@ var tip = d3.tip()
   .attr('class', 'd3-tip')
   .offset([-10, 0])
   .html(function(d) {
-    return "<strong>" + d.result + "%</strong><br/>" + formatDateTip(d.date) + "<br/><em>" + d.pollster + "</em><br/>" + d.population;
+    return "<strong>" + d.resultado + "%</strong><br/>" + formatDateTip(d.fecha) + "<br/><em>" + ((d.encuestadora !== null) ? d.encuestadora : "Resultado") + "</em><br/>" + d.poblacion;
 })
 
 svg.call(tip);
@@ -72,12 +78,20 @@ svg.call(tip);
 svg.selectAll()
     .data(data)
   .enter().append("circle")
-    .attr("cx", function(d) { return x(d.date); })
-    .attr("cy", function(d) { return y(d.result); })
-    .attr("class", function(d) { return (d.pollster === "resultado") ? d.clase + " " + d.pollster : d.clase; })
+    .attr("cx", function(d) { return x(d.fecha); })
+    .attr("cy", function(d) { return y(d.resultado); })
+    .attr("class", function(d) {
+        var classes = 'c-' + d.candidatoId + ' p-' + d.poblacionId;
+        if(d.encuestadora !== null) {
+            classes += ' e-' + d.encuestadoraId;
+        } else if(d.esRes === 1) {
+            classes += ' resultado';
+        }
+        return classes;
+    })
     .attr("r", radio)
     .style("opacity", opacity)
-    .style("fill", function(d) { return d.color })
+    .style("fill", function(d) { return '#'+d.color })
     .on('mouseover', function(d) {
         tip.show(d);
         circleOver(this, d);
@@ -91,9 +105,14 @@ svg.selectAll()
 //     .attr("r", radio*2);
 
 svg.append("g")
-    .attr("class", "axis")
+    .attr("class", "axis xAxis")
     .attr("transform", "translate(0," + y.range()[0] + ")")
-    .call(xAxis);
+    .call(xAxis)
+    .selectAll("text")
+        .style("text-anchor", "end")
+        .attr("dx", "-.8em")
+        .attr("dy", ".15em")
+        .attr("transform", "rotate(-45)");
 
 svg.append("g")
     .attr("class", "axis")

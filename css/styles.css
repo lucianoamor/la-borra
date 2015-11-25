@@ -19,9 +19,6 @@ nav {
     font-size: 3em;
     color: #000;
 }
-.dropdown-menu > li > a {
-    font-size: 13px;
-}
 .navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:hover, .navbar-default .navbar-nav > .active > a:focus {
     background-color: transparent;
 }
@@ -48,6 +45,32 @@ nav {
     opacity: .7;
     padding-top: 8px;
 }
+.competencia .btn-eleccion {
+    margin-top: 2px;
+}
+.competencia .dropdown-menu {
+  min-width:auto;
+  width:100%;
+  background-color: #EC971F;
+  border-radius: 0;
+  margin-top: 13px;
+  border: 0;
+}
+.competencia .dropdown-menu li a span {
+    font-size: .8em;
+    opacity: .7;
+}
+.competencia .dropdown-menu > li > a:hover,
+.competencia .dropdown-menu > li > a:focus {
+    background-color: #BF7000;
+    color: #fff;
+    font-weight: bold;
+}
+.competencia .dropdown-menu > li > a:hover > span,
+.competencia .dropdown-menu > li > a:focus > span {
+    font-weight: normal;
+    opacity: 1;
+}
 .filtros {
     background-color: #007D9F;
     color: #fff;
@@ -59,7 +82,9 @@ nav {
     width: 100%;
     padding: 6px;
 }
-
+.filtros .form-inline .form-group {
+    display: block;
+}
 
 .tabla {
     padding: 5px;
@@ -207,6 +232,9 @@ nav {
 }
 
 /* grafico */
+.axis.xAxis {
+    font-size: 10px;
+}
 .axis path,
 .axis line {
     shape-rendering: crispEdges;

@@ -1,5 +1,4 @@
-bower_components
-node_modules
-.tmp
-.sass-cache
-TODO.md
+_info
+admin/test
+_todo.txt
+*.sublime-*
