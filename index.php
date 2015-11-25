@@ -33,22 +33,20 @@ if($idE == 0)
 $idEAT = $elecciones[$idE]["idAT"];
 
 $fechas = array();
-$sql = "select fecha from encuestas where eleccion = '$idEAT' order by fecha asc";
+$sql = "select distinct fecha from encuestas where eleccion = '$idEAT' order by fecha asc";
 $res = $bd->query($sql);
 while($fila = $res->fetch_assoc())
     $fechas[$fila["fecha"]] = Funciones::fecha($fila["fecha"]);
 
 $poblaciones = array();
-$niveles = array("País"=>1, "Región"=>2, "Provincia"=>3, "Partido"=>4, "Localidad"=>5);
-$sql = "select p.nombre, p.nivel, p.idAT from encuestas as e left join poblacion as p on e.poblacion = p.idAT where e.eleccion = '$idEAT' order by p.nombre asc";
+$sql = "select p.nombre, p.nivel, p.idAT from encuestas as e left join poblacion as p on e.poblacion = p.idAT where e.eleccion = '$idEAT' group by p.idAT order by p.nivel asc, p.nombre asc";
 $res = $bd->query($sql);
 while($fila = $res->fetch_assoc()) {
-    $poblaciones[$niveles[$fila["nivel"]]][] = array(
-        "nombre"=>$fila["nombre"],
-        "idAT"=>$fila["idAT"];
+    $poblaciones[$fila["nivel"]][] = array(
+        "nombre" =>$fila["nombre"],
+        "idAT"   =>$fila["idAT"]
     );
 }
-
 include("header.php");
 ?>
     <div class="row">
@@ -106,40 +104,18 @@ foreach ($fechas as $k => $v) {
 <?php
 foreach ($poblaciones as $k => $v) {
 ?>
-                                <optgroup label="País">
-                                    <option value="1">Nacional</option>
+                                <optgroup label="<?php echo $k ?>">
+<?php
+    foreach ($v as $vv) {
+?>
+                                    <option value="<?php echo $vv["idAT"] ?>"><?php echo $vv["nombre"] ?></option>
+<?php
+    }
+?>
                                 </optgroup>
 <?php
 }
 ?>
-                                <optgroup label="Región">
-                                    <option value="2">CABA + GBA</option>
-                                    <option value="2">CABA + PBA</option>
-                                    <option value="2">GBA</option>
-                                </optgroup>
-                                <optgroup label="Provincia">
-                                    <option value="2">CABA</option>
-                                    <option value="2">Buenos Aires</option>
-                                    <option value="2">Chubut</option>
-                                    <option value="2">Córdoba</option>
-                                    <option value="2">Jujuy</option>
-                                    <option value="2">Mendoza</option>
-                                    <option value="2">Río Negro</option>
-                                    <option value="2">San Juan</option>
-                                    <option value="2">Tucumán</option>
-                                </optgroup>
-                                <optgroup label="Partido">
-                                    <option value="2">Hurlingham</option>
-                                    <option value="2">Ituzaingó</option>
-                                    <option value="2">La Matanza</option>
-                                    <option value="2">Morón</option>
-                                </optgroup>
-                                <optgroup label="Localidad">
-                                    <option value="2">Formosa, Formosa</option>
-                                    <option value="2">La Plata, Buenos Aires</option>
-                                    <option value="2">La Rioja, La Rioja</option>
-                                    <option value="2">Rosario, Santa Fe</option>
-                                </optgroup>
                             </select>
                         </div>
                     </div>
@@ -149,7 +125,7 @@ foreach ($poblaciones as $k => $v) {
     </div>
     <div class="row">
         <div class="col-sm-5 tile tabla">
-            <table class="table table-hover">
+            <table class="table table-hover tabla-">
                 <thead>
                 <tr>
                     <th></th>
@@ -164,11 +140,10 @@ foreach ($poblaciones as $k => $v) {
                 </tr>
                 </thead>
                 <tbody>
+
                 <tr>
                     <td class="text-center">
-                        <!-- <strong>Daniel Scioli</strong><br/> -->
                         <img src="https://dl.airtable.com/KOySa25oS120KwCZAaCX_scioli.jpg" title="Daniel Scioli" alt="Daniel Scioli" class="img fpv" data-content="<small>FPV</small>" data-clase="DanielScioli" />
-                        <!-- <br/>FPV -->
                     </td>
                     <td class="text-center">30</td>
                     <td class="text-center">5</td>
@@ -179,112 +154,8 @@ foreach ($poblaciones as $k => $v) {
                     <td class="prediccion text-center">35</td>
                     <td class="resultado text-center">36,3</td>
                 </tr>
-                <tr>
-                    <td class="text-center">
-                        <!-- <strong>Mauricio Macri</strong><br/> -->
-                        <img src="https://dl.airtable.com/p3opGjZtRyeRB5pIhccR_24396.jpg" title="Mauricio Macri" class="img pro" data-content="<small>PRO</small>" data-clase="MauricioMacri" />
-                        <!-- <br/>PRO -->
-                    </td>
-                    <td class="text-center">26</td>
-                    <td class="text-center">12</td>
-                    <td class="text-center">61</td>
-                    <td class="text-center">26</td>
-                    <td class="text-center">94</td>
-                    <td class="text-center"><a href="#">ver</a></td>
-                    <td class="prediccion text-center">25</td>
-                    <td class="resultado text-center">23</td>
-                </tr>
-                <tr>
-                    <td class="text-center">
-                        <img src="https://dl.airtable.com/Ipp6vusBQEqTKfoybUcu_Massa.jpg" title="Sergio Massa" class="img fr" data-content="<small>FR</small>" data-clase="SergioMassa" />
-                    </td>
-                    <td class="text-center">14</td>
-                    <td class="text-center">3</td>
-                    <td class="text-center">28</td>
-                    <td class="text-center">39</td>
-                    <td class="text-center">93</td>
-                    <td class="text-center"><a href="#">ver</a></td>
-                    <td class="prediccion text-center">13</td>
-                    <td class="resultado text-center">13,5</td>
-                </tr>
-                <tr>
-                    <td class="text-center">
-                        <img src="https://dl.airtable.com/fBXnRC05SM2NzhcFQnjc_randazzo_2015.jpg" title="Florencio Randazzo" class="img fpv" data-content="<small>FPV</small>" data-clase="FlorencioRandazzo" />
-                    </td>
-                    <td class="text-center">11</td>
-                    <td class="text-center">3</td>
-                    <td class="text-center">22</td>
-                    <td class="text-center">37</td>
-                    <td class="text-center">44</td>
-                    <td class="text-center"><a href="#">ver</a></td>
-                    <td class="prediccion text-center">10</td>
-                    <td class="resultado text-center">8</td>
-                </tr>
-                <tr>
-                    <td class="text-center">
-                        <img src="https://dl.airtable.com/ZXssmW4LQ1aqHy8Gkz7p_24239.jpg" title="Julio Cobos" class="img ucr" data-content="<small>UCR</small>" data-clase="JulioCobos" />
-                    </td>
-                    <td class="text-center">5</td>
-                    <td class="text-center">1</td>
-                    <td class="text-center">9</td>
-                    <td class="text-center">52</td>
-                    <td class="text-center">4</td>
-                    <td class="text-center"><a href="#">ver</a></td>
-                    <td class="prediccion text-center">-</td>
-                    <td class="resultado text-center">-</td>
-                </tr>
-                <tr>
-                    <td class="text-center">
-                        <img src="https://dl.airtable.com/6DYvbYmQSiu26CvvA0pw_De-la-sota-11.jpg" title="José Manuel De La Sota" class="img fr" data-content="<small>FR</small>" data-clase="JoséManuelDelaSota" />
-                    </td>
-                    <td class="text-center">4</td>
-                    <td class="text-center">1</td>
-                    <td class="text-center">22</td>
-                    <td class="text-center">76</td>
-                    <td class="text-center">72</td>
-                    <td class="text-center"><a href="#">ver</a></td>
-                    <td class="prediccion text-center">5</td>
-                    <td class="resultado text-center">6</td>
-                </tr>
-                <tr>
-                    <td class="text-center">
-                        <img src="https://dl.airtable.com/TPIu6KCjTCPJbPH6k8BH_STOLBIZER1.jpg" title="Margarita Stolbizer" class="img fap" data-content="<small>FAP</small>" data-clase="MargaritaStolbizer" />
-                    </td>
-                    <td class="text-center">4</td>
-                    <td class="text-center">0</td>
-                    <td class="text-center">10</td>
-                    <td class="text-center">42</td>
-                    <td class="text-center">74</td>
-                    <td class="text-center"><a href="#">ver</a></td>
-                    <td class="prediccion text-center">2</td>
-                    <td class="resultado text-center">3</td>
-                </tr>
-                <tr>
-                    <td class="text-center">
-                        <img src="images/blanco.gif" title="Blanco" class="img blanco" data-content="" data-clase="VotoenBlanco" />
-                    </td>
-                    <td class="text-center">5</td>
-                    <td class="text-center">2</td>
-                    <td class="text-center">6</td>
-                    <td class="text-center">25</td>
-                    <td class="text-center">5</td>
-                    <td class="text-center"><a href="#">ver</a></td>
-                    <td class="prediccion text-center">4</td>
-                    <td class="resultado text-center">4</td>
-                </tr>
-                <tr>
-                    <td class="text-center">
-                        <img src="images/blanco.gif" title="Blanco" class="img blanco" data-content="" data-clase="VotoenBlanco" />
-                    </td>
-                    <td class="text-center">5</td>
-                    <td class="text-center">2</td>
-                    <td class="text-center">6</td>
-                    <td class="text-center">25</td>
-                    <td class="text-center">5</td>
-                    <td class="text-center"><a href="#">ver</a></td>
-                    <td class="prediccion text-center">4</td>
-                    <td class="resultado text-center">4</td>
-                </tr>
+
+
                 </tbody>
                 <tfoot>
                     <tr>
