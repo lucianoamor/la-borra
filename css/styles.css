@@ -192,12 +192,9 @@ nav {
 .encuestas p {
     margin: 0;
 }
-.encuestas p.separador {
-    clear: both;
-    height: 10px;
-}
 .encuestas table {
     margin-bottom: 0;
+    margin-top: 20px;
 }
 .encuestas .table-hover > tbody > tr:hover {
     background-color: #019F00;

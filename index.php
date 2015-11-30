@@ -33,7 +33,7 @@ if($idE == 0)
 $idEAT = $elecciones[$idE]["idAT"];
 
 $fechas = array();
-$sql = "select distinct fecha from encuestas where eleccion = '$idEAT' order by fecha asc";
+$sql = "select distinct fecha from encuestas where eleccion = '$idEAT' and esResultado = 0 order by fecha asc";
 $res = $bd->query($sql);
 while($fila = $res->fetch_assoc())
     $fechas[$fila["fecha"]] = Funciones::fecha($fila["fecha"]);
@@ -79,12 +79,12 @@ foreach ($elecciones as $k => $v) {
             </div>
         </div>
         <div class="col-sm-6 tile filtros">
-            <form class="form-inline">
+            <form class="form-inline form-filtros">
                 <div class="row">
                     <div class="col-xs-6">
                         <div class="form-group">
                             <label for="from_date">Desde fecha:</label>
-                            <select class="form-control" id="from_date">
+                            <select class="form-control" id="from_date" name="from_date">
                                 <option value="0000-00-00">Todas</option>
 <?php
 foreach ($fechas as $k => $v) {
@@ -99,8 +99,8 @@ foreach ($fechas as $k => $v) {
                     <div class="col-xs-6">
                         <div class="form-group">
                             <label for="poblacion">Población:</label>
-                            <select class="form-control" id="poblacion">
-                                <option value="0">Todas</option>
+                            <select class="form-control" id="poblacion" name="poblacion">
+                                <option value="">Todas</option>
 <?php
 foreach ($poblaciones as $k => $v) {
 ?>
@@ -187,86 +187,15 @@ foreach ($poblaciones as $k => $v) {
         </div>
         <div class="col-xs-7 tile grafico">
             <div class="borra" id="borra"></div>
-            <div class="encuestas">
-                <p class="pull-left"><span>91</span> encuestas</p>
-                <button type="button" class="btn btn-success pull-right btn-ver-encuestas"><i class="icon-plus-sign icon-large"></i></button>
-                <p class="hidden separador">&nbsp;</p>
-                <table class="table table-hover table-condensed hidden">
-                    <tbody>
-                    <tr>
-                        <td>15/08/2015</td>
-                        <td>Carlos Fara y Asociados</td>
-                        <td>Provincia de Buenos Aires</td>
-                        <td><a href="http://" target="_blank"><i class="icon-link"></i></a></td>
-                    </tr>
-                    <tr>
-                        <td>15/08/2015</td>
-                        <td>Carlos Fara y Asociados</td>
-                        <td>Provincia de Buenos Aires</td>
-                        <td><a href="http://" target="_blank"><i class="icon-link"></i></a></td>
-                    </tr>
-                    <tr>
-                        <td>15/08/2015</td>
-                        <td>Carlos Fara y Asociados</td>
-                        <td>Provincia de Buenos Aires</td>
-                        <td><a href="http://" target="_blank"><i class="icon-link"></i></a></td>
-                    </tr>
-                    <tr>
-                        <td>15/08/2015</td>
-                        <td>Carlos Fara y Asociados</td>
-                        <td>Provincia de Buenos Aires</td>
-                        <td><a href="http://" target="_blank"><i class="icon-link"></i></a></td>
-                    </tr>
-                    <tr>
-                        <td>15/08/2015</td>
-                        <td>Carlos Fara y Asociados</td>
-                        <td>Provincia de Buenos Aires</td>
-                        <td><a href="http://" target="_blank"><i class="icon-link"></i></a></td>
-                    </tr>
-                    <tr>
-                        <td>15/08/2015</td>
-                        <td>Carlos Fara y Asociados</td>
-                        <td>Provincia de Buenos Aires</td>
-                        <td><a href="http://" target="_blank"><i class="icon-link"></i></a></td>
-                    </tr>
-                    <tr>
-                        <td>15/08/2015</td>
-                        <td>Carlos Fara y Asociados</td>
-                        <td>Provincia de Buenos Aires</td>
-                        <td><a href="http://" target="_blank"><i class="icon-link"></i></a></td>
-                    </tr>
-                    <tr>
-                        <td>15/08/2015</td>
-                        <td>Carlos Fara y Asociados</td>
-                        <td>Provincia de Buenos Aires</td>
-                        <td><a href="http://" target="_blank"><i class="icon-link"></i></a></td>
-                    </tr>
-                    <tr>
-                        <td>15/08/2015</td>
-                        <td>Carlos Fara y Asociados</td>
-                        <td>Provincia de Buenos Aires</td>
-                        <td><a href="http://" target="_blank"><i class="icon-link"></i></a></td>
-                    </tr>
-                    <tr>
-                        <td>15/08/2015</td>
-                        <td>Carlos Fara y Asociados</td>
-                        <td>Provincia de Buenos Aires</td>
-                        <td><a href="http://" target="_blank"><i class="icon-link"></i></a></td>
-                    </tr>
-                    <tr>
-                        <td>15/08/2015</td>
-                        <td>Carlos Fara y Asociados</td>
-                        <td>Provincia de Buenos Aires</td>
-                        <td><a href="http://" target="_blank"><i class="icon-link"></i></a></td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
+            <form class="form-filtros">
+                <div class="encuestas"></div>
+            </form>
         </div>
     </div>
 </div>
 <script>
-var idE = '?e=<?php echo $idE ?>';
+var idE   = '<?php echo $idE ?>',
+    idGet = '?e=<?php echo $idE ?>';
 </script>
 <script src="js/jquery-1.11.3.min.js"></script>
 <script src="js/bootstrap.min.js"></script>

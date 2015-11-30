@@ -5,18 +5,56 @@ include("admin/bd.php");
 $bd = conectar();
 $data["tabla"] = "";
 // input
-$idE = 26;
-$desde = "2015-10-25";
-$poblacion = "reclAF3T9Wb4sLupk";
-$encuestadoras = array(1, 2);
-$encuestas = array(1, 2);
+$idE = 0;
+if(isset($_POST["id"])) {
+    $idE = $bd->real_escape_string($_POST["id"]);
+    if(!filter_var(filter_var($idE, FILTER_SANITIZE_NUMBER_INT), FILTER_VALIDATE_INT))
+        $idE = 0;
+}
+if($idE == 0) {
+    echo json_encode($data);
+    exit;
+}
 
-$filtros = "and enc.fecha >= '$desde' and enc.poblacion = '$poblacion'";
-// $filtros = "";
+$desde         = 0;
+$poblacion     = 0;
+$encuestadoras = array();
+$encuestas     = array();
+$filtros       = array();
+if(isset($_POST["from_date"])) {
+    $desde = $bd->real_escape_string($_POST["from_date"]);
+    $desdeE = explode("-", $desde);
+    if(checkdate($desdeE[1], $desdeE[2], $desdeE[0]) === false || $desde == "0000-00-00")
+        $desde = 0;
+}
+if($desde > 0)
+    $filtros[] = "enc.fecha >= '$desde'";
+
+if(isset($_POST["poblacion"]))
+    $poblacion = $bd->real_escape_string($_POST["poblacion"]);
+if($poblacion != "")
+    $filtros[] = "enc.poblacion = '$poblacion'";
+
+if(isset($_POST["encuestadoras"])) {
+    $filtroE = array();
+    foreach ($_POST["encuestadoras"] as $v)
+        $filtroE[] = "encs.idAT != '".$bd->real_escape_string($v)."'";
+    $filtros[] = implode(" and ", $filtroE);
+}
+
+if(isset($_POST["encuestas"])) {
+    $filtroE = array();
+    foreach ($_POST["encuestas"] as $v)
+        $filtroE[] = "enc.idAT != '".$bd->real_escape_string($v)."'";
+    $filtros[] = implode(" and ", $filtroE);
+}
+
+if(count($filtros) == 0)
+    $filtros[] = "1 = 1"; // para sql valido
 
 $candidatos = array();
 $intencion  = array();
-$sql = "select c.nombre, c.imagen, a.nombre as agrupacion, c.idAT as cId, r.intencion, a.color from elecciones as e left join encuestas as enc on enc.eleccion = e.idAT left join encuestadoras as encs on enc.encuestadora = encs.idAT left join poblacion as p on enc.poblacion = p.idAT left join resultados as r on r.encuesta = enc.idAT left join candidatos as c on r.candidato = c.idAT left join agrupaciones as a on c.agrupacion = a.idAT where e.id = $idE and enc.esResultado = 0 $filtros";
+$sql = "select c.nombre, c.imagen, a.nombre as agrupacion, c.idAT as cId, r.intencion, a.color from elecciones as e left join encuestas as enc on enc.eleccion = e.idAT left join encuestadoras as encs on enc.encuestadora = encs.idAT left join poblacion as p on enc.poblacion = p.idAT left join resultados as r on r.encuesta = enc.idAT left join candidatos as c on r.candidato = c.idAT left join agrupaciones as a on c.agrupacion = a.idAT where e.id = $idE and enc.esResultado = 0 and ".implode(" and ", $filtros);
 $res = $bd->query($sql);
 if($res->num_rows > 0) {
     while($fila = $res->fetch_assoc()) {
@@ -35,7 +73,7 @@ $sql = "select c.idAT as cId, r.intencion from elecciones as e left join encuest
 $res = $bd->query($sql);
 if($res->num_rows == 0) {
     foreach ($candidatos as $k => $v)
-        $resultados[$k] = "?";
+        $resultados[$k] = "-";
 }
 else {
     while($fila = $res->fetch_assoc())
@@ -56,7 +94,7 @@ foreach ($intencion as $k => $v) {
     $cv[$k]  = round(dvStd($v) / $avg[$k] * 100, 2);
     $lb[$k]  = ""; //
     if(!isset($resultados[$k]))
-        $resultados[$k] = "?";
+        $resultados[$k] = "-";
 }
 arsort($avg);
 
@@ -76,6 +114,12 @@ foreach ($avg as $k => $v) {
         <td class="resultado text-center">'.$resultados[$k].'</td>
     </tr>';
 }
+
+if($data["tabla"] == "")
+    $data["tabla"] = '
+    <tr>
+        <td colspan="9" class="text-center">No hay encuestas que coincidan con los filtros elegidos</td>
+    </tr>';
 echo json_encode($data);
 
 //
