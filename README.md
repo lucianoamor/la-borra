@@ -3,8 +3,8 @@
 ### Requerimientos
 * URL propia
 * Hosting
-** PHP >= 5.2
-** MySQL
+    * PHP >= 5.2
+    * MySQL
 
 ### Instalación
 * Clonar repositorio y subirlo a la web
