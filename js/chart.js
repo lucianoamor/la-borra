@@ -1,3 +1,23 @@
+// tablas por ajax
+$(document).ready(function() {
+
+    $('#from_date').change(function(event) {
+        event.preventDefault();
+        tablaResultados(idE, );
+    });
+    $('#poblacion').change(function(event) {
+        event.preventDefault();
+
+    });
+
+});
+
+function tablaResultados(idE) {
+    $.post('resultados.php', {}, function(data) {
+        $('.tabla-resultados tbody').html(data.tabla);
+    });
+}
+
 // url > html5 browsers
 if(location.search === '' && typeof history.replaceState !== 'undefined') {
     history.replaceState({}, '', location.protocol + '//' + location.host + location.pathname + idE);

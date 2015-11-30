@@ -125,7 +125,7 @@ foreach ($poblaciones as $k => $v) {
     </div>
     <div class="row">
         <div class="col-sm-5 tile tabla">
-            <table class="table table-hover tabla-">
+            <table class="table table-hover tabla-resultados">
                 <thead>
                 <tr>
                     <th></th>
@@ -139,24 +139,7 @@ foreach ($poblaciones as $k => $v) {
                     <th class="resultado th-col">R<br/><span>%</span></th>
                 </tr>
                 </thead>
-                <tbody>
-
-                <tr>
-                    <td class="text-center">
-                        <img src="https://dl.airtable.com/KOySa25oS120KwCZAaCX_scioli.jpg" title="Daniel Scioli" alt="Daniel Scioli" class="img fpv" data-content="<small>FPV</small>" data-clase="DanielScioli" />
-                    </td>
-                    <td class="text-center">30</td>
-                    <td class="text-center">5</td>
-                    <td class="text-center">56</td>
-                    <td class="text-center">31</td>
-                    <td class="text-center">94</td>
-                    <td class="text-center"><a href="#">ver</a></td>
-                    <td class="prediccion text-center">35</td>
-                    <td class="resultado text-center">36,3</td>
-                </tr>
-
-
-                </tbody>
+                <tbody></tbody>
                 <tfoot>
                     <tr>
                         <td colspan="9">

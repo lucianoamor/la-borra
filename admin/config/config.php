@@ -9,4 +9,6 @@ $bbdd = array(
 // AirTable
 $apiId  = "appj1TfGD74KBBsLw";
 $apiKey = "keylIkCA0tLMrSAuM";
+//
+$pais = "Argentina";
 ?>

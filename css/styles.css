@@ -135,24 +135,6 @@ nav {
     border-radius: 50%;
     cursor: help;
 }
-.tabla td .img.fpv {
-    border-color: #4682B4;
-}
-.tabla td .img.pro {
-    border-color: #FFD300;
-}
-.tabla td .img.fr {
-    border-color: #008000;
-}
-.tabla td .img.ucr {
-    border-color: #FF0000;
-}
-.tabla td .img.fap {
-    border-color: #800080;
-}
-.tabla td .img.blanco {
-    border-color: #ddd;
-}
 .tabla tfoot h5 {
     color: #888;
     margin-bottom: 3px;
