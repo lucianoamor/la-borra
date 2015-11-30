@@ -61,7 +61,9 @@ function apiCall($bd, $c, $queryUrl, $tablaLocal, $campos, $offset) {
                         $array = $vo->fields->$kc;
                         $field = "";
                         if(property_exists($array[0], "thumbnails"))
-                            $field = $array[0]->thumbnails->large->url;
+                            $field = $array[0]->thumbnails->small->url;
+                        else
+                            $field = "images/default.jpg";
                         break;
                     case "id":
                         $array = $vo->fields->$kc;
