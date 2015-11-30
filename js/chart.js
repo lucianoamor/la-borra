@@ -101,9 +101,9 @@ svg.selectAll()
     .attr("cx", function(d) { return x(d.fecha); })
     .attr("cy", function(d) { return y(d.resultado); })
     .attr("class", function(d) {
-        var classes = 'c-' + d.candidatoId + ' p-' + d.poblacionId;
+        var classes = 'c-' + d.candidatoId + ' p-' + d.poblacionId + 'e-' + d.encuestaId;
         if(d.encuestadora !== null) {
-            classes += ' e-' + d.encuestadoraId;
+            classes += ' er-' + d.encuestadoraId;
         } else if(d.esRes === 1) {
             classes += ' resultado';
         }
