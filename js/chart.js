@@ -3,19 +3,22 @@ $(document).ready(function() {
 
     $('#from_date').change(function(event) {
         event.preventDefault();
-        tablaResultados(idE, );
+        tablaResultados(idE);
     });
     $('#poblacion').change(function(event) {
         event.preventDefault();
 
     });
 
+    // ini
+    tablaResultados(idE);
+
 });
 
 function tablaResultados(idE) {
     $.post('resultados.php', {}, function(data) {
-        $('.tabla-resultados tbody').html(data.tabla);
-    });
+        $('.tabla-resultados tbody:first').html(data.tabla);
+    }, 'json');
 }
 
 // url > html5 browsers
@@ -142,12 +145,12 @@ function tablaOver(clase) {
     d3.selectAll('.' + clase).attr("r", radio*2).classed("circleSelected", true);
 };
 
-$('.tabla tr')
-    .on('mouseenter', function () {
+$('.tabla-resultados')
+    .on('mouseenter', 'tbody:first tr', function () {
         var clase = $(this).find('.img').attr('data-clase');
         tablaOver(clase);
     })
-    .on('mouseleave', function () {
+    .on('mouseleave', 'tbody:first tr', function () {
         d3.selectAll('.circleSelected').attr("r", radio).classed("circleSelected", false);
     });
 

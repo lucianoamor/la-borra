@@ -5,14 +5,15 @@ include("admin/bd.php");
 $bd = conectar();
 $data["tabla"] = "";
 // input
-$idE = 31;
-$desde = "0000-00-00";
-$poblacion = 0;
+$idE = 26;
+$desde = "2015-10-25";
+$poblacion = "reclAF3T9Wb4sLupk";
 $encuestadoras = array(1, 2);
+$encuestas = array(1, 2);
 
-$filtros = "and enc.fecha >= '$desde' and enc.poblacion = '$poblacion' and (enc.encuestadora = 1 or enc.encuestadora = 2...)";
-$filtros = "";
-//
+$filtros = "and enc.fecha >= '$desde' and enc.poblacion = '$poblacion'";
+// $filtros = "";
+
 $candidatos = array();
 $intencion  = array();
 $sql = "select c.nombre, c.imagen, a.nombre as agrupacion, c.idAT as cId, r.intencion, a.color from elecciones as e left join encuestas as enc on enc.eleccion = e.idAT left join encuestadoras as encs on enc.encuestadora = encs.idAT left join poblacion as p on enc.poblacion = p.idAT left join resultados as r on r.encuesta = enc.idAT left join candidatos as c on r.candidato = c.idAT left join agrupaciones as a on c.agrupacion = a.idAT where e.id = $idE and enc.esResultado = 0 $filtros";
@@ -54,14 +55,16 @@ foreach ($intencion as $k => $v) {
     $avg[$k] = round(array_sum($v) / $n[$k], 2);
     $cv[$k]  = round(dvStd($v) / $avg[$k] * 100, 2);
     $lb[$k]  = ""; //
+    if(!isset($resultados[$k]))
+        $resultados[$k] = "?";
 }
-sort($avg);
+arsort($avg);
 
 foreach ($avg as $k => $v) {
-    $data["tabla"] = '
+    $data["tabla"] .= '
     <tr>
         <td class="text-center">
-            <img src="'.$candidatos[$k]["imagen"].'" title="'.$candidatos[$k]["nombre"].'" alt="'.$candidatos[$k]["nombre"].'" class="img" style="border-color:#'.$candidatos[$k]["color"].';" data-content="<small>'.$candidatos[$k]["agrupacion"].'</small>" data-clase="'.$k.'" />
+            <img src="'.$candidatos[$k]["imagen"].'" title="'.$candidatos[$k]["nombre"].'" alt="'.$candidatos[$k]["nombre"].'" class="img" style="border-color:#'.$candidatos[$k]["color"].';" data-content="<small>'.$candidatos[$k]["agrupacion"].'</small>" data-clase="c-'.$k.'" />
         </td>
         <td class="text-center">'.$v.'</td>
         <td class="text-center">'.$min[$k].'</td>
@@ -82,6 +85,6 @@ function dvStd($a) {
     $vz  = 0;
     foreach ($a as $v)
         $vz += pow($v - $avg, 2);
-    return sqrt($vz / $n - 1);
+    return sqrt($vz / $n);
 }
 ?>
