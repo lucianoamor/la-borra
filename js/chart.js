@@ -80,11 +80,13 @@ $(document).ready(function() {
 });
 
 function tablaResultados(idE) {
+    $('.tabla-resultados tbody:first').html('<tr><td colspan="9" class="text-center"><i class="icon-spinner icon-spin icon-2x"></i></td></tr>');
     $.post('resultados.php', $('.form-filtros').serialize() + '&id=' + idE, function(data) {
         $('.tabla-resultados tbody:first').html(data.tabla);
     }, 'json');
 }
 function tablaEncuestas(idE) {
+    $('.encuestas').html('<p class="text-center"><i class="icon-spinner icon-spin icon-2x"></i></p>');
     $.post('encuestas.php', $('.form-filtros').serialize() + '&id=' + idE, function(data) {
         $('.encuestas').html(data.tabla);
     }, 'json');
