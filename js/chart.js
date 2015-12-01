@@ -15,12 +15,43 @@ $(document).ready(function() {
             inp.prop('disabled', false);
             icon.removeClass().addClass('icon-check-empty');
             $(this).removeClass('btn-success').addClass('btn-default');
-            tr.removeClass().addClass('unchecked');
+            tr.addClass('unchecked');
+            if($(this).hasClass('encs-check')) {
+                // es padre
+                var trH   = tr.nextUntil('tr.tr-encs'),
+                    btnH  = trH.find('.enc-check'),
+                    inpH  = btnH.siblings('input'),
+                    iconH = btnH.children('i');
+                inpH.prop('disabled', false);
+                iconH.removeClass().addClass('icon-check-empty');
+                btnH.removeClass('btn-success').addClass('btn-default');
+                trH.addClass('unchecked');
+            }
         } else {
             inp.prop('disabled', true);
             icon.removeClass().addClass('icon-check');
             $(this).removeClass('btn-default').addClass('btn-success');
-            tr.removeClass();
+            tr.removeClass('unchecked');
+            if($(this).hasClass('encs-check')) {
+                // es padre
+                var trH   = tr.nextUntil('tr.tr-encs'),
+                    btnH  = trH.find('.enc-check'),
+                    inpH  = btnH.siblings('input'),
+                    iconH = btnH.children('i');
+                inpH.prop('disabled', true);
+                iconH.removeClass().addClass('icon-check');
+                btnH.removeClass('btn-default').addClass('btn-success');
+                trH.removeClass('unchecked');
+            } else {
+                var trP   = tr.prevAll('tr.tr-encs').first(),
+                    btnP  = trP.find('.enc-check'),
+                    inpP  = btnP.siblings('input'),
+                    iconP = btnP.children('i');
+                inpP.prop('disabled', true);
+                iconP.removeClass().addClass('icon-check');
+                btnP.removeClass('btn-default').addClass('btn-success');
+                trP.removeClass('unchecked');
+            }
         }
         tablaResultados(idE);
         updNEncuestas();

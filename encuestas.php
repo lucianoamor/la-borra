@@ -69,7 +69,7 @@ $data["tabla"] .= '
     <tbody>';
 foreach ($encuestadoras as $k => $v) {
     $data["tabla"] .= '
-        <tr>
+        <tr class="tr-encs">
             <td class="encuestadora"><button type="button" class="btn btn-xs btn-success enc-check encs-check"><i class="icon-check"></i></button><input type="hidden" name="encuestadoras[]" value="'.$k.'" disabled></td>
             <td colspan="4"><strong>'.$v.'</strong></td>
         </tr>';
@@ -78,7 +78,7 @@ foreach ($encuestadoras as $k => $v) {
         if($vv["fuente"] != "")
             $link = '<a href="'.$vv["fuente"].'" target="_blank"><i class="icon-link"></i></a>';
         $data["tabla"] .= '
-        <tr>
+        <tr class="tr-enc">
             <td></td>
             <td><button type="button" class="btn btn-xs btn-success enc-check"><i class="icon-check"></i></button><input type="hidden" name="encuestas[]" value="'.$vv["encID"].'" disabled></td>
             <td>'.Funciones::fecha($vv["fecha"]).'</td>
