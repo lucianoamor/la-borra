@@ -1,6 +1,7 @@
 <?php
 // se llama por ajax
 include("admin/params.php");
+include("admin/func.php");
 include("admin/bd.php");
 $bd = conectar();
 $data["tabla"] = "";
@@ -51,80 +52,39 @@ if($res->num_rows > 0) {
         );
     }
 }
-$data["tabla"] = '
-<p class="pull-left"><span>'.$res->num_rows.'</span> encuestas</p>';
-
-/*
+if($res->num_rows == 0) {
+    echo json_encode($data);
+    exit;
+}
+$txtEnc = "encuestas";
+if($res->num_rows == 1)
+    $txtEnc = "encuesta";
 $data["tabla"] .= '
+<p class="pull-left"><span>'.$res->num_rows.'</span> '.$txtEnc.'</p>
 <table class="table table-hover table-condensed">
-    <tbody>
-    <tr>
-        <td>15/08/2015</td>
-        <td>Carlos Fara y Asociados</td>
-        <td>Provincia de Buenos Aires</td>
-        <td><a href="http://" target="_blank"><i class="icon-link"></i></a></td>
-    </tr>
-    <tr>
-        <td>15/08/2015</td>
-        <td>Carlos Fara y Asociados</td>
-        <td>Provincia de Buenos Aires</td>
-        <td><a href="http://" target="_blank"><i class="icon-link"></i></a></td>
-    </tr>
-    <tr>
-        <td>15/08/2015</td>
-        <td>Carlos Fara y Asociados</td>
-        <td>Provincia de Buenos Aires</td>
-        <td><a href="http://" target="_blank"><i class="icon-link"></i></a></td>
-    </tr>
-    <tr>
-        <td>15/08/2015</td>
-        <td>Carlos Fara y Asociados</td>
-        <td>Provincia de Buenos Aires</td>
-        <td><a href="http://" target="_blank"><i class="icon-link"></i></a></td>
-    </tr>
-    <tr>
-        <td>15/08/2015</td>
-        <td>Carlos Fara y Asociados</td>
-        <td>Provincia de Buenos Aires</td>
-        <td><a href="http://" target="_blank"><i class="icon-link"></i></a></td>
-    </tr>
-    <tr>
-        <td>15/08/2015</td>
-        <td>Carlos Fara y Asociados</td>
-        <td>Provincia de Buenos Aires</td>
-        <td><a href="http://" target="_blank"><i class="icon-link"></i></a></td>
-    </tr>
-    <tr>
-        <td>15/08/2015</td>
-        <td>Carlos Fara y Asociados</td>
-        <td>Provincia de Buenos Aires</td>
-        <td><a href="http://" target="_blank"><i class="icon-link"></i></a></td>
-    </tr>
-    <tr>
-        <td>15/08/2015</td>
-        <td>Carlos Fara y Asociados</td>
-        <td>Provincia de Buenos Aires</td>
-        <td><a href="http://" target="_blank"><i class="icon-link"></i></a></td>
-    </tr>
-    <tr>
-        <td>15/08/2015</td>
-        <td>Carlos Fara y Asociados</td>
-        <td>Provincia de Buenos Aires</td>
-        <td><a href="http://" target="_blank"><i class="icon-link"></i></a></td>
-    </tr>
-    <tr>
-        <td>15/08/2015</td>
-        <td>Carlos Fara y Asociados</td>
-        <td>Provincia de Buenos Aires</td>
-        <td><a href="http://" target="_blank"><i class="icon-link"></i></a></td>
-    </tr>
-    <tr>
-        <td>15/08/2015</td>
-        <td>Carlos Fara y Asociados</td>
-        <td>Provincia de Buenos Aires</td>
-        <td><a href="http://" target="_blank"><i class="icon-link"></i></a></td>
-    </tr>
+    <tbody>';
+foreach ($encuestadoras as $k => $v) {
+    $data["tabla"] .= '
+        <tr>
+            <td><button type="button" class="btn btn-xs btn-danger">x</button></td>
+            <td colspan="4"><strong>'.$v.'</strong></td>
+        </tr>';
+    foreach ($encuestas[$k] as $vv) {
+        $link = "";
+        if($vv["fuente"] != "")
+            $link = '<a href="'.$vv["fuente"].'" target="_blank"><i class="icon-link"></i></a>';
+        $data["tabla"] .= '
+        <tr>
+            <td></td>
+            <td><button type="button" class="btn btn-xs btn-danger">x</button></td>
+            <td>'.Funciones::fecha($vv["fecha"]).'</td>
+            <td>'.$vv["poblacion"].'</td>
+            <td>'.$link.'</td>
+        </tr>';
+    }
+}
+$data["tabla"] .= '
     </tbody>
-</table>';*/
+</table>';
 echo json_encode($data);
 ?>
