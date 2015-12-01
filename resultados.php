@@ -3,6 +3,8 @@
 include("admin/params.php");
 include("admin/bd.php");
 $bd = conectar();
+$_SESSION["encuestadoras"] = array();
+$_SESSION["encuestas"]     = array();
 $data["tabla"] = "";
 // input
 $idE = 0;
@@ -37,15 +39,19 @@ if($poblacion != "")
 
 if(isset($_POST["encuestadoras"])) {
     $filtroE = array();
-    foreach ($_POST["encuestadoras"] as $v)
+    foreach ($_POST["encuestadoras"] as $v) {
         $filtroE[] = "encs.idAT != '".$bd->real_escape_string($v)."'";
+        $_SESSION["encuestadoras"][] = $v;
+    }
     $filtros[] = implode(" and ", $filtroE);
 }
 
 if(isset($_POST["encuestas"])) {
     $filtroE = array();
-    foreach ($_POST["encuestas"] as $v)
+    foreach ($_POST["encuestas"] as $v) {
         $filtroE[] = "enc.idAT != '".$bd->real_escape_string($v)."'";
+        $_SESSION["encuestas"][] = $v;
+    }
     $filtros[] = implode(" and ", $filtroE);
 }
 

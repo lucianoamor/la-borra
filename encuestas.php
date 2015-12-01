@@ -3,6 +3,11 @@
 include("admin/params.php");
 include("admin/func.php");
 include("admin/bd.php");
+if(!isset($_SESSION["encuestadoras"]))
+    $_SESSION["encuestadoras"] = array();
+if(!isset($_SESSION["encuestas"]))
+    $_SESSION["encuestas"] = array();
+
 $bd = conectar();
 $data["tabla"] = "";
 // input
@@ -68,19 +73,39 @@ $data["tabla"] .= '
 <table class="table table-hover table-condensed">
     <tbody>';
 foreach ($encuestadoras as $k => $v) {
+    $icon      = "icon-check";
+    $btnStatus = "disabled";
+    $btnClass  = "btn-success";
+    $trClass   = "";
+    if(in_array($k, $_SESSION["encuestadoras"])) {
+        $icon      = "icon-check-empty";
+        $btnStatus = "";
+        $btnClass  = "btn-default";
+        $trClass   = "unchecked";
+    }
     $data["tabla"] .= '
-        <tr class="tr-encs">
-            <td class="encuestadora"><button type="button" class="btn btn-xs btn-success enc-check encs-check"><i class="icon-check"></i></button><input type="hidden" name="encuestadoras[]" value="'.$k.'" disabled></td>
+        <tr class="tr-encs '.$trClass.'">
+            <td class="encuestadora"><button type="button" class="btn btn-xs '.$btnClass.' enc-check encs-check"><i class="'.$icon.'"></i></button><input type="hidden" name="encuestadoras[]" value="'.$k.'" '.$btnStatus.'></td>
             <td colspan="4"><strong>'.$v.'</strong></td>
         </tr>';
     foreach ($encuestas[$k] as $vv) {
+        $icon      = "icon-check";
+        $btnStatus = "disabled";
+        $btnClass  = "btn-success";
+        $trClass   = "";
+        if(in_array($vv["encID"], $_SESSION["encuestas"])) {
+            $icon      = "icon-check-empty";
+            $btnStatus = "";
+            $btnClass  = "btn-default";
+            $trClass   = "unchecked";
+        }
         $link = "";
         if($vv["fuente"] != "")
             $link = '<a href="'.$vv["fuente"].'" target="_blank"><i class="icon-link"></i></a>';
         $data["tabla"] .= '
-        <tr class="tr-enc">
+        <tr class="tr-enc '.$trClass.'">
             <td></td>
-            <td><button type="button" class="btn btn-xs btn-success enc-check"><i class="icon-check"></i></button><input type="hidden" name="encuestas[]" value="'.$vv["encID"].'" disabled></td>
+            <td><button type="button" class="btn btn-xs '.$btnClass.' enc-check"><i class="'.$icon.'"></i></button><input type="hidden" name="encuestas[]" value="'.$vv["encID"].'" '.$btnStatus.'></td>
             <td>'.Funciones::fecha($vv["fecha"]).'</td>
             <td>'.$vv["poblacion"].'</td>
             <td>'.$link.'</td>
@@ -90,5 +115,7 @@ foreach ($encuestadoras as $k => $v) {
 $data["tabla"] .= '
     </tbody>
 </table>';
+$_SESSION["encuestadoras"] = array();
+$_SESSION["encuestas"]     = array();
 echo json_encode($data);
 ?>
