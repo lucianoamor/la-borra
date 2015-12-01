@@ -198,6 +198,22 @@ nav {
 .encuestas .table-hover > tbody > tr:hover {
     background-color: #019F00;
 }
+.encuestas table tr.unchecked {
+    opacity: .7;
+    background-color: #8B9F8B;
+}
+.encuestas .enc-check i {
+    font-size: 13px;
+}
+.encuestas .encuestadora {
+    width: 50px;
+}
+.encuestas .encuestadora .enc-check {
+    padding: 1px 10px;
+}
+.encuestas .encuestadora .enc-check.btn-success {
+    background-color: #62DF61;
+}
 .encuestas a i.icon-link {
     color: #fff;
 }
