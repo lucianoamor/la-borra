@@ -167,7 +167,13 @@ var tip = d3.tip()
   .attr('class', 'd3-tip')
   .offset([-10, 0])
   .html(function(d) {
-    return "<strong>" + d.resultado + "%</strong><br/>" + formatDateTip(d.fecha) + "<br/><em>" + ((d.encuestadora !== null) ? d.encuestadora : "Resultado") + "</em><br/>" + d.poblacion;
+    var t = '<strong>' + d.resultado + '%</strong>' + "<br/>";
+    if(d.esRes === 0) {
+        t += formatDateTip(d.fecha) + "<br/><em>" + d.encuestadora + "</em><br/>" + d.poblacion;
+    } else {
+        t += "<em>" + "Resultado" + "</em>";
+    }
+    return t;
 })
 
 svg.call(tip);
