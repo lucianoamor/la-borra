@@ -26,6 +26,15 @@ $(document).ready(function() {
                 iconH.removeClass().addClass('icon-check-empty');
                 btnH.removeClass('btn-success').addClass('btn-default');
                 trH.addClass('unchecked');
+            } else if(tr.nextUntil('tr.tr-encs').find('input:disabled').length + tr.prevUntil('tr.tr-encs').find('input:disabled').length === 0) {
+                var trP   = tr.prevAll('tr.tr-encs').first(),
+                    btnP  = trP.find('.enc-check'),
+                    inpP  = btnP.siblings('input'),
+                    iconP = btnP.children('i');
+                inpP.prop('disabled', false);
+                iconP.removeClass().addClass('icon-check-empty');
+                btnP.removeClass('btn-success').addClass('btn-default');
+                trP.addClass('unchecked');
             }
         } else {
             inp.prop('disabled', true);
