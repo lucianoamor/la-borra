@@ -57,6 +57,9 @@ if($res->num_rows == 0) {
     echo json_encode($data);
     exit;
 }
+
+// checkboxs son inputs disabled. si uncheck, enable (manda por post solo los unchecked)
+
 $txtEnc = "encuestas";
 if($res->num_rows == 1)
     $txtEnc = "encuesta";
@@ -67,7 +70,7 @@ $data["tabla"] .= '
 foreach ($encuestadoras as $k => $v) {
     $data["tabla"] .= '
         <tr>
-            <td class="encuestadora"><button type="button" class="btn btn-xs btn-success enc-check"><i class="icon-check"></i></button><input type="hidden" name="encuestadoras[]" value="'.$k.'" disabled></td>
+            <td class="encuestadora"><button type="button" class="btn btn-xs btn-success enc-check encs-check"><i class="icon-check"></i></button><input type="hidden" name="encuestadoras[]" value="'.$k.'" disabled></td>
             <td colspan="4"><strong>'.$v.'</strong></td>
         </tr>';
     foreach ($encuestas[$k] as $vv) {
