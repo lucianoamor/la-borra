@@ -1,4 +1,4 @@
-REATE TABLE IF NOT EXISTS `agrupaciones` (
+CREATE TABLE IF NOT EXISTS `agrupaciones` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `idAT` char(17) NOT NULL,
   `nombre` varchar(100) NOT NULL,
