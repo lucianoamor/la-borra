@@ -17,9 +17,9 @@ if($idE == 0) {
     exit;
 }
 
-$desde         = 0;
-$poblacion     = 0;
-$filtros       = array();
+$desde     = 0;
+$poblacion = 0;
+$filtros   = array();
 if(isset($_POST["from_date"])) {
     $desde = $bd->real_escape_string($_POST["from_date"]);
     $desdeE = explode("-", $desde);
@@ -53,6 +53,7 @@ if($res->num_rows > 0) {
     }
 }
 if($res->num_rows == 0) {
+    $data["tabla"] .= '<p class="pull-left"><span class="nEnc">0</span> encuestas</p>';
     echo json_encode($data);
     exit;
 }
@@ -60,13 +61,13 @@ $txtEnc = "encuestas";
 if($res->num_rows == 1)
     $txtEnc = "encuesta";
 $data["tabla"] .= '
-<p class="pull-left"><span>'.$res->num_rows.'</span> '.$txtEnc.'</p>
+<p class="pull-left"><span class="nEnc">'.$res->num_rows.'</span> '.$txtEnc.'</p>
 <table class="table table-hover table-condensed">
     <tbody>';
 foreach ($encuestadoras as $k => $v) {
     $data["tabla"] .= '
         <tr>
-            <td><button type="button" class="btn btn-xs btn-danger">x</button></td>
+            <td class="encuestadora"><button type="button" class="btn btn-xs btn-success enc-check"><i class="icon-check"></i></button><input type="hidden" name="encuestadoras[]" value="'.$k.'" disabled></td>
             <td colspan="4"><strong>'.$v.'</strong></td>
         </tr>';
     foreach ($encuestas[$k] as $vv) {
@@ -76,7 +77,7 @@ foreach ($encuestadoras as $k => $v) {
         $data["tabla"] .= '
         <tr>
             <td></td>
-            <td><button type="button" class="btn btn-xs btn-danger">x</button></td>
+            <td><button type="button" class="btn btn-xs btn-success enc-check"><i class="icon-check"></i></button><input type="hidden" name="encuestas[]" value="'.$vv["encID"].'" disabled></td>
             <td>'.Funciones::fecha($vv["fecha"]).'</td>
             <td>'.$vv["poblacion"].'</td>
             <td>'.$link.'</td>

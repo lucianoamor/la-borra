@@ -8,7 +8,22 @@ $(document).ready(function() {
 
     $('.encuestas').on('click', '.enc-check', function(event) {
         event.preventDefault();
+        var inp  = $(this).siblings('input'),
+            icon = $(this).children('i'),
+            tr   = $(this).parents('tr');
+        if(inp.is(':disabled')) {
+            inp.prop('disabled', false);
+            icon.removeClass().addClass('icon-check-empty');
+            $(this).removeClass('btn-success').addClass('btn-default');
+            tr.removeClass().addClass('unchecked');
+        } else {
+            inp.prop('disabled', true);
+            icon.removeClass().addClass('icon-check');
+            $(this).removeClass('btn-default').addClass('btn-success');
+            tr.removeClass();
+        }
         tablaResultados(idE);
+        updNEncuestas();
     });
 
     $('.tabla-resultados')
@@ -42,6 +57,9 @@ function tablaEncuestas(idE) {
     $.post('encuestas.php', $('.form-filtros').serialize() + '&id=' + idE, function(data) {
         $('.encuestas').html(data.tabla);
     }, 'json');
+}
+function updNEncuestas() {
+    $('.nEnc').html($('input[name="encuestas[]"]:disabled').length);
 }
 
 // url > html5 browsers
