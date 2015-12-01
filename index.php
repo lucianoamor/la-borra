@@ -42,11 +42,14 @@ $poblaciones = array();
 $sql = "select p.nombre, p.nivel, p.idAT from encuestas as e left join poblacion as p on e.poblacion = p.idAT where e.eleccion = '$idEAT' group by p.idAT order by p.nivel asc, p.nombre asc";
 $res = $bd->query($sql);
 while($fila = $res->fetch_assoc()) {
+    if($fila["nivel"] == "")
+        continue;
     $poblaciones[$fila["nivel"]][] = array(
         "nombre" =>$fila["nombre"],
         "idAT"   =>$fila["idAT"]
     );
 }
+
 include("header.php");
 ?>
     <div class="row">
