@@ -202,6 +202,9 @@ nav {
     opacity: .7;
     background-color: #8B9F8B;
 }
+.encuestas .table-condensed > tbody > tr > td {
+    padding: 4px;
+}
 .encuestas .enc-check i {
     font-size: 13px;
 }
