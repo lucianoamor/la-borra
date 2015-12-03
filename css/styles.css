@@ -127,11 +127,11 @@ nav {
 .tabla tbody tr td {
     vertical-align: middle;
     font-size: 14px;
-    padding: 5px;
+    padding: 5px 2px;
 }
 .tabla td .img {
-    width: 60%;
-    border: 5px solid;
+    width: 44px;
+    border: 4px solid;
     border-radius: 50%;
     cursor: help;
 }
