@@ -138,14 +138,13 @@ foreach ($poblaciones as $k => $v) {
                     <th class="th-col">CV<br/><span>%</span></th>
                     <th class="th-col">OBS<br/><span>#</span></th>
                     <th class="th-col">T<br/><span><i class="icon-bar-chart"></i></span></th>
-                    <th class="prediccion th-col">LB<br/><span>%</span></th>
                     <th class="resultado th-col">R<br/><span>%</span></th>
                 </tr>
                 </thead>
                 <tbody></tbody>
                 <tfoot>
                     <tr>
-                        <td colspan="9">
+                        <td colspan="8">
                             <h5>Referencias:</h5>
                             <table class="table table-condensed">
                                 <tbody>
@@ -172,10 +171,6 @@ foreach ($poblaciones as $k => $v) {
                                 <tr>
                                     <td class="ref">T</td>
                                     <td>tendencia (regresión polinomial)</td>
-                                </tr>
-                                <tr>
-                                    <td class="ref prediccion">LB</td>
-                                    <td>predicción de La Borra</td>
                                 </tr>
                                 <tr>
                                     <td class="ref resultado">R</td>

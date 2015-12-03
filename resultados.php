@@ -94,11 +94,16 @@ $cv  = array();
 $lb  = array();
 foreach ($intencion as $k => $v) {
     $n[$k]   = count($v);
-    $max[$k] = max($v);
-    $min[$k] = min($v);
-    $avg[$k] = round(array_sum($v) / $n[$k], 2);
-    $cv[$k]  = round(dvStd($v) / $avg[$k] * 100, 2);
-    $lb[$k]  = ""; //
+    $max[$k] = round(max($v), 1);
+    $min[$k] = round(min($v), 1);
+    if($n[$k] > 0) {
+        $avg[$k] = round(array_sum($v) / $n[$k], 1);
+        $cv[$k]  = round(dvStd($v) / $avg[$k] * 100, 1);
+    }
+    else {
+        $avg[$k] = 0;
+        $cv[$k]  = 0;
+    }
     if(!isset($resultados[$k]))
         $resultados[$k] = "-";
 }
@@ -116,7 +121,6 @@ foreach ($avg as $k => $v) {
         <td class="text-center">'.$cv[$k].'</td>
         <td class="text-center">'.$n[$k].'</td>
         <td class="text-center"><a href="#">ver</a></td>
-        <td class="prediccion text-center">'.$lb[$k].'</td>
         <td class="resultado text-center">'.$resultados[$k].'</td>
     </tr>';
 }
@@ -124,13 +128,15 @@ foreach ($avg as $k => $v) {
 if($data["tabla"] == "")
     $data["tabla"] = '
     <tr>
-        <td colspan="9" class="text-center">No hay encuestas que coincidan con los filtros elegidos</td>
+        <td colspan="8" class="text-center">No hay encuestas que coincidan con los filtros elegidos</td>
     </tr>';
 echo json_encode($data);
 
 //
 function dvStd($a) {
     $n   = count($a);
+    if($n == 0)
+        return 0;
     $avg = array_sum($a) / $n;
     $vz  = 0;
     foreach ($a as $v)
