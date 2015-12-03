@@ -153,6 +153,7 @@ nav {
 .tabla tfoot .table tbody tr td.ref {
     font-weight: bold;
     width: 10%;
+    vertical-align: top;
 }
 .tabla tfoot .table tbody tr td.ref.prediccion {
     background-color: #fff;

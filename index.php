@@ -136,6 +136,7 @@ foreach ($poblaciones as $k => $v) {
                     <th class="th-col">MIN<br/><span>%</span></th>
                     <th class="th-col">MAX<br/><span>%</span></th>
                     <th class="th-col">CV<br/><span>%</span></th>
+                    <th class="th-col">N1<br/><span>#</span></th>
                     <th class="th-col">OBS<br/><span>#</span></th>
                     <th class="th-col">T<br/><span><i class="icon-bar-chart"></i></span></th>
                     <th class="resultado th-col">R<br/><span>%</span></th>
@@ -144,7 +145,7 @@ foreach ($poblaciones as $k => $v) {
                 <tbody></tbody>
                 <tfoot>
                     <tr>
-                        <td colspan="8">
+                        <td colspan="9">
                             <h5>Referencias:</h5>
                             <table class="table table-condensed">
                                 <tbody>
@@ -163,6 +164,10 @@ foreach ($poblaciones as $k => $v) {
                                 <tr>
                                     <td class="ref">CV</td>
                                     <td>coeficiente de variación</td>
+                                </tr>
+                                <tr>
+                                    <td class="ref">N1</td>
+                                    <td>encuestas en las que el candidato figura en el primer puesto</td>
                                 </tr>
                                 <tr>
                                     <td class="ref">OBS</td>

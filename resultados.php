@@ -20,8 +20,6 @@ if($idE == 0) {
 
 $desde         = 0;
 $poblacion     = 0;
-$encuestadoras = array();
-$encuestas     = array();
 $filtros       = array();
 if(isset($_POST["from_date"])) {
     $desde = $bd->real_escape_string($_POST["from_date"]);
@@ -60,22 +58,34 @@ if(count($filtros) == 0)
 
 $candidatos = array();
 $intencion  = array();
-$sql = "select c.nombre, c.imagen, a.nombre as agrupacion, c.idAT as cId, r.intencion, a.color from elecciones as e left join encuestas as enc on enc.eleccion = e.idAT left join encuestadoras as encs on enc.encuestadora = encs.idAT left join poblacion as p on enc.poblacion = p.idAT left join resultados as r on r.encuesta = enc.idAT left join candidatos as c on r.candidato = c.idAT left join agrupaciones as a on c.agrupacion = a.idAT where e.id = $idE and enc.esResultado = 0 and ".implode(" and ", $filtros);
+$encuestas  = array();
+$sql = "select c.nombre, c.imagen, a.nombre as agrupacion, c.idAT as cID, r.intencion, a.color, enc.idAT as encuestaID from elecciones as e left join encuestas as enc on enc.eleccion = e.idAT left join encuestadoras as encs on enc.encuestadora = encs.idAT left join poblacion as p on enc.poblacion = p.idAT left join resultados as r on r.encuesta = enc.idAT left join candidatos as c on r.candidato = c.idAT left join agrupaciones as a on c.agrupacion = a.idAT where e.id = $idE and enc.esResultado = 0 and ".implode(" and ", $filtros)." order by r.intencion asc"; // ordena por si hay alguna encuesta con mas de un dato para el mismo candidato. en $encuestas queda el mas alto, para calcular N1
 $res = $bd->query($sql);
 if($res->num_rows > 0) {
     while($fila = $res->fetch_assoc()) {
-        $intencion[$fila["cId"]][] = $fila["intencion"];
-        $candidatos[$fila["cId"]] = array(
+        $intencion[$fila["cID"]][] = $fila["intencion"];
+        $candidatos[$fila["cID"]] = array(
             "nombre"     =>$fila["nombre"],
             "imagen"     =>$fila["imagen"],
             "color"      =>$fila["color"],
             "agrupacion" =>$fila["agrupacion"]
         );
+        $encuestas[$fila["encuestaID"]][$fila["cID"]] = $fila["intencion"];
     }
 }
 
+$maxEncuesta = array();
+foreach ($candidatos as $k => $v)
+    $maxEncuesta[$k] = 0;
+foreach ($encuestas as $eID => $v) {
+    $max = max($v);
+    $maxK = array_keys($v, $max);
+    foreach ($maxK as $vv)
+        $maxEncuesta[$vv]++;
+}
+
 $resultados = array();
-$sql = "select c.idAT as cId, r.intencion from elecciones as e left join encuestas as enc on enc.eleccion = e.idAT left join resultados as r on r.encuesta = enc.idAT left join candidatos as c on r.candidato = c.idAT where e.id = $idE and enc.esResultado = 1 order by enc.fecha asc"; // por si hay mas de 1
+$sql = "select c.idAT as cID, r.intencion from elecciones as e left join encuestas as enc on enc.eleccion = e.idAT left join resultados as r on r.encuesta = enc.idAT left join candidatos as c on r.candidato = c.idAT where e.id = $idE and enc.esResultado = 1 order by enc.fecha asc"; // por si hay mas de 1
 $res = $bd->query($sql);
 if($res->num_rows == 0) {
     foreach ($candidatos as $k => $v)
@@ -83,7 +93,7 @@ if($res->num_rows == 0) {
 }
 else {
     while($fila = $res->fetch_assoc())
-        $resultados[$fila["cId"]] = $fila["intencion"];
+        $resultados[$fila["cID"]] = $fila["intencion"];
 }
 
 $n   = array();
@@ -91,7 +101,7 @@ $max = array();
 $min = array();
 $avg = array();
 $cv  = array();
-$lb  = array();
+$n1  = array(); // n en que candidato esta 1ro
 foreach ($intencion as $k => $v) {
     $n[$k]   = count($v);
     $max[$k] = round(max($v), 1);
@@ -104,6 +114,7 @@ foreach ($intencion as $k => $v) {
         $avg[$k] = 0;
         $cv[$k]  = 0;
     }
+    $n1[$k] = $maxEncuesta[$k];
     if(!isset($resultados[$k]))
         $resultados[$k] = "-";
 }
@@ -119,6 +130,7 @@ foreach ($avg as $k => $v) {
         <td class="text-center">'.$min[$k].'</td>
         <td class="text-center">'.$max[$k].'</td>
         <td class="text-center">'.$cv[$k].'</td>
+        <td class="text-center">'.$n1[$k].'</td>
         <td class="text-center">'.$n[$k].'</td>
         <td class="text-center"><a href="#">ver</a></td>
         <td class="resultado text-center">'.$resultados[$k].'</td>
@@ -128,7 +140,7 @@ foreach ($avg as $k => $v) {
 if($data["tabla"] == "")
     $data["tabla"] = '
     <tr>
-        <td colspan="8" class="text-center">No hay encuestas que coincidan con los filtros elegidos</td>
+        <td colspan="9" class="text-center">No hay encuestas que coincidan con los filtros elegidos</td>
     </tr>';
 echo json_encode($data);
 
