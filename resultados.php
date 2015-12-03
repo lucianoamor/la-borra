@@ -93,7 +93,7 @@ if($res->num_rows == 0) {
 }
 else {
     while($fila = $res->fetch_assoc())
-        $resultados[$fila["cID"]] = $fila["intencion"];
+        $resultados[$fila["cID"]] = round($fila["intencion"], 1);
 }
 
 $n   = array();
