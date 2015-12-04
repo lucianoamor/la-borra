@@ -251,6 +251,10 @@ nav {
     stroke-width: 2px;
 }
 
+.line {
+    fill: none;
+}
+
 .d3-tip {
   padding: 12px;
   background: #eee;
