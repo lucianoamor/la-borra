@@ -138,7 +138,7 @@ foreach ($poblaciones as $k => $v) {
                     <th class="th-col">CV<br/><span>%</span></th>
                     <th class="th-col">N1<br/><span>#</span></th>
                     <th class="th-col">OBS<br/><span>#</span></th>
-                    <th class="th-col">T<br/><span><i class="icon-bar-chart"></i></span></th>
+                    <th class="th-col img"><img src="images/chart.png" alt="" /></th>
                     <th class="resultado th-col">R<br/><span>%</span></th>
                 </tr>
                 </thead>

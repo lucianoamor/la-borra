@@ -132,7 +132,7 @@ foreach ($avg as $k => $v) {
         <td class="text-center">'.$cv[$k].'</td>
         <td class="text-center">'.$n1[$k].'</td>
         <td class="text-center">'.$n[$k].'</td>
-        <td class="text-center"><a href="#">ver</a></td>
+        <td class="text-center"><button type="button" class="btn btn-default btn-xs btn-hide-circles" data-candidato="'.$k.'"><i class="icon-check"></i></button> <button type="button" class="btn btn-default btn-xs btn-hide-lines" data-candidato="'.$k.'"><i class="icon-check"></i></button></td>
         <td class="resultado text-center">'.$resultados[$k].'</td>
     </tr>';
 }

@@ -80,6 +80,36 @@ $(document).ready(function() {
             .classed("circleSelected", false);
     });
 
+    $('.tabla-resultados').on('click', '.btn-hide-circles', function(event) {
+        event.preventDefault();
+        var cID  = $(this).attr('data-candidato'),
+            icon = $(this).children('i');
+        if(icon.hasClass('icon-check')) {
+            icon.removeClass('icon-check').addClass('icon-check-empty');
+            d3.selectAll('circle.c-' + cID)
+                .classed("hidden", true);
+        } else {
+            icon.removeClass('icon-check-empty').addClass('icon-check');
+            d3.selectAll('circle.c-' + cID + '.hidden')
+                .classed("hidden", false);
+        }
+    });
+
+    $('.tabla-resultados').on('click', '.btn-hide-lines', function(event) {
+        event.preventDefault();
+        var cID  = $(this).attr('data-candidato'),
+            icon = $(this).children('i');
+        if(icon.hasClass('icon-check')) {
+            icon.removeClass('icon-check').addClass('icon-check-empty');
+            d3.selectAll('.line.c-' + cID)
+                .classed("hidden", true);
+        } else {
+            icon.removeClass('icon-check-empty').addClass('icon-check');
+            d3.selectAll('.line.c-' + cID + '.hidden')
+                .classed("hidden", false);
+        }
+    });
+
     $('.encuestas')
     .on('mouseenter', 'tr', function () {
         var clase = $(this).attr('data-clase');

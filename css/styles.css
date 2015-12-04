@@ -108,6 +108,9 @@ nav {
 .tabla th.th-col {
     width: 10%;
 }
+.tabla th.th-col.img {
+    vertical-align: middle;
+}
 .tabla .prediccion {
     background-color: #EC971F;
     color: #fff;
@@ -171,6 +174,14 @@ nav {
 .tabla .table-hover > tbody > tr:hover,
 .tabla .table-hover > tbody > tr.hover {
     background-color: #E1FFDF;
+}
+
+.btn-hide-circles,
+.btn-hide-lines {
+    border: 0;
+    background-color: transparent;
+    color: #666;
+    font-size: 13px;
 }
 
 .grafico {
