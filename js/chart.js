@@ -130,7 +130,7 @@ if(location.search === '' && typeof history.replaceState !== 'undefined') {
 // d3
 var margin  = {top: 5, right: 10, bottom: 60, left: 40};
     width   = 670,
-    height  = 550,
+    height  = 490,
     radio   = 4,
     yExtra  = 1,
     opacity = .75,
