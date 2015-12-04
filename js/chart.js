@@ -287,7 +287,7 @@ function circleOver(t) {
 }
 
 function circleOut() {
-    d3.selectAll('.circleSelected')
+    d3.selectAll('circle.circleSelected')
         .attr("r", radio)
         .style("opacity", opacity)
         .classed("circleSelected", false);
@@ -428,17 +428,20 @@ function updateChart(filtros) {
         regresion.forEach(function(d) {
             d[0] = new Date(d[0]);
         });
-
+        if(dataCandidato.length === 0) {
+            dataCandidato.push('');
+            dataCandidato[0].candidatoId = '';
+        }
         svg.select(".line.c-" + dataCandidato[0].candidatoId).transition()
             .duration(750)
                 .attr("d", valueline(regresion))
-                .attr("opacity", opacity);
+                .style("opacity", opacity);
     }
     var candidatosL = candidatosExit.length;
     for (var i = 0; i < candidatosL; i++) {
-        svg.select(".line." + candidatosExit[i]).transition()
+        svg.select(".line.c-" + candidatosExit[i]).transition()
             .duration(750)
-                .attr("opacity", 0);
+                .style("opacity", 0);
     }
 
     // ejes
