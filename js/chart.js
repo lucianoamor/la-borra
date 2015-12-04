@@ -74,7 +74,10 @@ $(document).ready(function() {
         tablaOver(clase);
     })
     .on('mouseleave', 'tbody:first tr', function () {
-        d3.selectAll('.circleSelected').attr("r", radio).classed("circleSelected", false);
+        d3.selectAll('.circleSelected')
+            .attr("r", radio)
+            .attr("stroke-width", stroke)
+            .classed("circleSelected", false);
     });
 
     // popovers
@@ -119,6 +122,7 @@ var margin  = {top: 5, right: 10, bottom: 60, left: 40};
     radio   = 4,
     yExtra  = 1,
     opacity = .75,
+    stroke  = 2,
     format  = d3.time.format("%Y-%m-%d"),
     myFormatters = d3.locale({
         "decimal": ",",
@@ -173,6 +177,42 @@ var rect = svg.append("rect")
     .style("fill", "#fff")
     .attr("transform", "translate(-" + margin.top + ",-" + margin.left + ")");
 
+var valueline = d3.svg.line()
+    .x(function(d) { return x(d[0]); })
+    .y(function(d) { return y(d[1]); });
+
+// regresion
+var dataL = data.length,
+    candidatos = [];
+for (var i = 0; i < dataL; i++) {
+    if(candidatos.indexOf(data[i].candidatoId) === -1) {
+        candidatos.push(data[i].candidatoId);
+    }
+}
+var candidatosL = candidatos.length;
+for (var i = 0; i < candidatosL; i++) {
+    var dataCandidato = data.filter(function(d) {
+        return d.candidatoId === candidatos[i] && d.esRes === 0 && d.esRes === 0;
+    });
+    dataCandidato = dataCandidato.sort(function(a, b) {
+        return a["fecha"] - b["fecha"];
+    });
+    var dataRegresion = [];
+    dataCandidato.forEach(function(d) {
+        dataRegresion.push([d.fecha.getTime(), d.resultado]);
+    });
+    var regresion = regression('polynomial', dataRegresion, 3).points;
+    regresion.forEach(function(d) {
+        d[0] = new Date(d[0]);
+    });
+    svg.append("path")
+        .attr("d", valueline(regresion))
+        .attr("class", "line c-" + dataCandidato[0].candidatoId)
+        .attr("stroke", "#" + dataCandidato[0].color)
+        .attr("stroke-width", stroke);
+}
+
+// tip
 var formatDateTip = d3.time.format("%d/%m/%Y");
 
 var tip = d3.tip()
@@ -204,20 +244,34 @@ svg.append("g")
     .attr("class", "axis yAxis")
     .call(yAxis);
 
-
+// funciones
 function tablaOver(clase) {
-    d3.selectAll('.' + clase).attr("r", radio*2).classed("circleSelected", true);
+    d3.selectAll('.' + clase)
+        .attr("r", radio*1.6)
+        .attr("stroke-width", stroke*2)
+        .classed("circleSelected", true);
 };
 
 function circleOver(t) {
-    var item = d3.select(t),
-        clase = item.attr("class");
-    $('.img[data-clase="'+ clase +'"]').parents('tr').addClass('hover');
-    d3.select(t).attr("r", radio*2).classed("circleSelected", true);
+    var item   = d3.select(t),
+        clases = item.attr("class").split(' '),
+        clase = clases.filter(function(d) {
+            return d.indexOf('c-') > -1;
+        });
+    $('.img[data-clase="'+ clase[0] +'"]').parents('tr').addClass('hover');
+    d3.selectAll('circle.' + clase[0])
+        .attr("r", radio*1.6)
+        .classed("circleSelected", true);
+    item
+        .attr("r", radio*2.2)
+        .style("opacity", 1);
 }
 
 function circleOut() {
-    d3.selectAll('.circleSelected').attr("r", radio).classed("circleSelected", false);
+    d3.selectAll('.circleSelected')
+        .attr("r", radio)
+        .style("opacity", opacity)
+        .classed("circleSelected", false);
     $('.img').parents('tr').removeClass('hover');
 }
 
@@ -278,11 +332,11 @@ function updateChart(filtros) {
     }
 
     x.domain(d3.extent(dataFiltered, function(d) { return d.fecha; }));
-
     var max = d3.max(dataFiltered, function(d) { return d.resultado; });
     var upper = max + yExtra;
     y.domain([0, upper]);
 
+    // circulos
     svg.selectAll("circle")
         .transition()
             .duration(750)
@@ -320,6 +374,54 @@ function updateChart(filtros) {
             .style("opacity", opacity)
             .attr("r", radio);
 
+    // regresion polinomial
+    var dataL = dataFiltered.length,
+        candidatos = [];
+    for (var i = 0; i < dataL; i++) {
+        if(candidatos.indexOf(dataFiltered[i].candidatoId) === -1) {
+            candidatos.push(dataFiltered[i].candidatoId);
+        }
+    }
+    var dataL = data.length,
+        candidatosTodos = [];
+    for (var i = 0; i < dataL; i++) {
+        if(candidatosTodos.indexOf(data[i].candidatoId) === -1) {
+            candidatosTodos.push(data[i].candidatoId);
+        }
+    }
+    var candidatosExit = candidatosTodos.filter(function(d) {
+        return candidatos.indexOf(d) === -1 ;
+    });
+    var candidatosL = candidatos.length;
+    for (var i = 0; i < candidatosL; i++) {
+        var dataCandidato = dataFiltered.filter(function(d) {
+            return d.candidatoId === candidatos[i] && d.esRes === 0;
+        });
+        dataCandidato = dataCandidato.sort(function(a, b) {
+            return a["fecha"] - b["fecha"];
+        });
+        var dataRegresion = [];
+        dataCandidato.forEach(function(d) {
+            dataRegresion.push([d.fecha.getTime(), d.resultado]);
+        });
+        var regresion = regression('polynomial', dataRegresion, 3).points;
+        regresion.forEach(function(d) {
+            d[0] = new Date(d[0]);
+        });
+
+        svg.select(".line.c-" + dataCandidato[0].candidatoId).transition()
+            .duration(750)
+                .attr("d", valueline(regresion))
+                .attr("opacity", opacity);
+    }
+    var candidatosL = candidatosExit.length;
+    for (var i = 0; i < candidatosL; i++) {
+        svg.select(".line." + candidatosExit[i]).transition()
+            .duration(750)
+                .attr("opacity", 0);
+    }
+
+    // ejes
     svg.select(".axis.xAxis").transition()
         .duration(750)
         .call(xAxis)
