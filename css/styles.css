@@ -239,12 +239,12 @@ nav {
     shape-rendering: crispEdges;
     fill: none;
     stroke-width: 1px;
+    stroke: #999;
 }
 .axis path {
     stroke: #666;
 }
-.axis line {
-    stroke: #999;
+.yAxis line {
     stroke-dasharray: 1px 3px;
 }
 .resultado {
