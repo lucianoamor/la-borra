@@ -132,14 +132,14 @@ foreach ($poblaciones as $k => $v) {
                 <thead>
                 <tr>
                     <th></th>
-                    <th class="th-col">AVG<br/><span>%</span></th>
-                    <th class="th-col">MIN<br/><span>%</span></th>
-                    <th class="th-col">MAX<br/><span>%</span></th>
-                    <th class="th-col">CV<br/><span>%</span></th>
-                    <th class="th-col">N1<br/><span>#</span></th>
-                    <th class="th-col">OBS<br/><span>#</span></th>
-                    <th class="th-col img"><img src="images/chart.png" alt="" /></th>
-                    <th class="resultado th-col">R<br/><span>%</span></th>
+                    <th class="th-col"><span title="promedio" class="tooltip-trigger">AVG<br/><span class="unidad">%</span></span></th>
+                    <th class="th-col"><span title="mínimo" class="tooltip-trigger">MIN<br/><span class="unidad">%</span></span></th>
+                    <th class="th-col"><span title="máximo" class="tooltip-trigger">MAX<br/><span class="unidad">%</span></span></th>
+                    <th class="th-col"><span title="coeficiente de variación" class="tooltip-trigger">CV<br/><span class="unidad">%</span></span></th>
+                    <th class="th-col"><span title="encuestas en las que el candidato figura en el primer puesto" class="tooltip-trigger">N1<br/><span class="unidad">#</span></span></th>
+                    <th class="th-col"><span title="observaciones (encuestas)" class="tooltip-trigger">OBS<br/><span class="unidad">#</span></span></th>
+                    <th class="th-col img"><span title="ver/ocultar círculos y/o líneas" class="tooltip-trigger"><img src="images/chart.png" alt="" /></span></th>
+                    <th class="resultado th-col"><span title="resultado final" class="tooltip-trigger">R<br/><span class="unidad">%</span></span></th>
                 </tr>
                 </thead>
                 <tbody></tbody>
@@ -171,11 +171,11 @@ foreach ($poblaciones as $k => $v) {
                                 </tr>
                                 <tr>
                                     <td class="ref">OBS</td>
-                                    <td>observaciones</td>
+                                    <td>observaciones (encuestas)</td>
                                 </tr>
                                 <tr>
-                                    <td class="ref">T</td>
-                                    <td>tendencia (regresión polinomial)</td>
+                                    <td class="ref"><img src="images/chart.png" alt="" /></td>
+                                    <td>ver/ocultar círculos y/o líneas</td>
                                 </tr>
                                 <tr>
                                     <td class="ref resultado">R</td>

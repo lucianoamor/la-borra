@@ -129,6 +129,11 @@ $(document).ready(function() {
         selector: '.img'
     });
 
+    $('.tabla-resultados').tooltip({
+        selector: '.tooltip-trigger',
+        placement: 'bottom'
+    });
+
     // ini
     tablaResultados(idE);
     tablaEncuestas(idE);

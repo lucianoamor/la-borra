@@ -97,7 +97,7 @@ nav {
     border: 0;
     background-color: #ddd;
 }
-.tabla th span {
+.tabla th span.unidad {
     font-weight: normal;
     color: #999;
 }
