@@ -87,6 +87,7 @@ $(document).ready(function() {
     // ini
     tablaResultados(idE);
     tablaEncuestas(idE);
+    updateChart();
 
 });
 
@@ -157,8 +158,8 @@ var xAxis = d3.svg.axis()
 var yAxis = d3.svg.axis()
     .scale(y)
     .tickFormat(function(d) { return d + "%"; })
-    .ticks(21) // cada 5
-    .orient("left");
+    .orient("left")
+    .innerTickSize(-width);
 
 var svg = d3.select("#borra").append("svg")
     .attr("width", width)
@@ -189,32 +190,6 @@ var tip = d3.tip()
 
 svg.call(tip);
 
-svg.selectAll()
-    .data(data)
-  .enter().append("circle")
-    .attr("cx", function(d) { return x(d.fecha); })
-    .attr("cy", function(d) { return y(d.resultado); })
-    .attr("class", function(d) {
-        var classes = 'c-' + d.candidatoId + ' p-' + d.poblacionId + ' e-' + d.encuestaId;
-        if(d.encuestadora !== null) {
-            classes += ' er-' + d.encuestadoraId;
-        } else if(d.esRes === 1) {
-            classes += ' resultado';
-        }
-        return classes;
-    })
-    .attr("r", radio)
-    .style("opacity", opacity)
-    .style("fill", function(d) { return '#' + d.color })
-    .on('mouseover', function(d) {
-        tip.show(d);
-        circleOver(this, d);
-    })
-    .on('mouseout', function(d) {
-        tip.hide(d);
-        circleOut(this, d);
-    });
-
 svg.append("g")
     .attr("class", "axis xAxis")
     .attr("transform", "translate(0," + y.range()[0] + ")")
@@ -228,6 +203,7 @@ svg.append("g")
 svg.append("g")
     .attr("class", "axis yAxis")
     .call(yAxis);
+
 
 function tablaOver(clase) {
     d3.selectAll('.' + clase).attr("r", radio*2).classed("circleSelected", true);
@@ -246,57 +222,59 @@ function circleOut() {
 }
 
 function updateChart(filtros) {
-    filtrosObj = filtros.serializeFormJSON();
-    dataFiltered = data;
+    var dataFiltered = data;
+    if(filtros) {
+        var filtrosObj = filtros.serializeFormJSON();
 
-    if(filtrosObj.poblacion !== '') {
-        dataFiltered = dataFiltered.filter(function(d) {
-            return d.poblacionId === filtrosObj.poblacion || d.esRes === 1;
-        });
-    }
-
-    if(filtrosObj.from_date !== '0000-00-00') {
-        dataFiltered = dataFiltered.filter(function(d) {
-            return d.fecha >= Date.parse(filtrosObj.from_date) || d.esRes === 1;
-        });
-    }
-
-    if(filtrosObj['encuestadoras[]']) {
-        if(!Array.isArray(filtrosObj['encuestadoras[]'])) {
-            var encuestadoras = [];
-            encuestadoras[0] = filtrosObj['encuestadoras[]'];
-        } else {
-            var encuestadoras = filtrosObj['encuestadoras[]'];
+        if(filtrosObj.poblacion !== '') {
+            dataFiltered = dataFiltered.filter(function(d) {
+                return d.poblacionId === filtrosObj.poblacion || d.esRes === 1;
+            });
         }
-        dataFiltered = dataFiltered.filter(function(d) {
-            if(d.esRes === 1) {
-                return true;
-            }
-            if(encuestadoras.indexOf(d.encuestadoraId) > -1) {
-                return false;
-            } else {
-                return true;
-            }
-        });
-    }
 
-    if(filtrosObj['encuestas[]']) {
-        if(!Array.isArray(filtrosObj['encuestas[]'])) {
-            var encuestas = [];
-            encuestas[0] = filtrosObj['encuestas[]'];
-        } else {
-            var encuestas = filtrosObj['encuestas[]'];
+        if(filtrosObj.from_date !== '0000-00-00') {
+            dataFiltered = dataFiltered.filter(function(d) {
+                return d.fecha >= Date.parse(filtrosObj.from_date) || d.esRes === 1;
+            });
         }
-        dataFiltered = dataFiltered.filter(function(d) {
-            if(d.esRes === 1) {
-                return true;
-            }
-            if(encuestas.indexOf(d.encuestaId) > -1) {
-                return false;
+
+        if(filtrosObj['encuestadoras[]']) {
+            if(!Array.isArray(filtrosObj['encuestadoras[]'])) {
+                var encuestadoras = [];
+                encuestadoras[0] = filtrosObj['encuestadoras[]'];
             } else {
-                return true;
+                var encuestadoras = filtrosObj['encuestadoras[]'];
             }
-        });
+            dataFiltered = dataFiltered.filter(function(d) {
+                if(d.esRes === 1) {
+                    return true;
+                }
+                if(encuestadoras.indexOf(d.encuestadoraId) > -1) {
+                    return false;
+                } else {
+                    return true;
+                }
+            });
+        }
+
+        if(filtrosObj['encuestas[]']) {
+            if(!Array.isArray(filtrosObj['encuestas[]'])) {
+                var encuestas = [];
+                encuestas[0] = filtrosObj['encuestas[]'];
+            } else {
+                var encuestas = filtrosObj['encuestas[]'];
+            }
+            dataFiltered = dataFiltered.filter(function(d) {
+                if(d.esRes === 1) {
+                    return true;
+                }
+                if(encuestas.indexOf(d.encuestaId) > -1) {
+                    return false;
+                } else {
+                    return true;
+                }
+            });
+        }
     }
 
     x.domain(d3.extent(dataFiltered, function(d) { return d.fecha; }));
