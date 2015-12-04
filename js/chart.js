@@ -80,6 +80,18 @@ $(document).ready(function() {
             .classed("circleSelected", false);
     });
 
+    $('.encuestas')
+    .on('mouseenter', 'tr', function () {
+        var clase = $(this).attr('data-clase');
+        tablaOver(clase);
+    })
+    .on('mouseleave', 'tr', function () {
+        d3.selectAll('.circleSelected')
+            .attr("r", radio)
+            .attr("stroke-width", stroke)
+            .classed("circleSelected", false);
+    });
+
     // popovers
     $('.tabla-resultados').popover({
         trigger: 'hover',
