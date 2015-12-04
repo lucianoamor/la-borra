@@ -84,7 +84,7 @@ foreach ($encuestadoras as $k => $v) {
         $trClass   = "unchecked";
     }
     $data["tabla"] .= '
-        <tr class="tr-encs '.$trClass.'">
+        <tr class="tr-encs '.$trClass.' er-'.$k.'">
             <td class="encuestadora"><button type="button" class="btn btn-xs '.$btnClass.' enc-check encs-check"><i class="'.$icon.'"></i></button><input type="hidden" name="encuestadoras[]" value="'.$k.'" '.$btnStatus.'></td>
             <td colspan="4"><strong>'.$v.'</strong></td>
         </tr>';
@@ -103,7 +103,7 @@ foreach ($encuestadoras as $k => $v) {
         if($vv["fuente"] != "")
             $link = '<a href="'.$vv["fuente"].'" target="_blank"><i class="icon-link"></i></a>';
         $data["tabla"] .= '
-        <tr class="tr-enc '.$trClass.'">
+        <tr class="tr-enc '.$trClass.' e-'.$vv["encID"].'">
             <td></td>
             <td><button type="button" class="btn btn-xs '.$btnClass.' enc-check"><i class="'.$icon.'"></i></button><input type="hidden" name="encuestas[]" value="'.$vv["encID"].'" '.$btnStatus.'></td>
             <td>'.Funciones::fecha($vv["fecha"]).'</td>

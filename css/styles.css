@@ -196,7 +196,8 @@ nav {
 .encuestas table {
     margin-bottom: 0;
 }
-.encuestas .table-hover > tbody > tr:hover {
+.encuestas .table-hover > tbody > tr:hover,
+.encuestas .table-hover > tbody > tr.hover {
     background-color: #019F00;
 }
 .encuestas table tr.unchecked {

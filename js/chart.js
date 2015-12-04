@@ -255,11 +255,18 @@ function tablaOver(clase) {
 function circleOver(t) {
     var item   = d3.select(t),
         clases = item.attr("class").split(' '),
-        clase = clases.filter(function(d) {
+        claseCandidato = clases.filter(function(d) {
             return d.indexOf('c-') > -1;
+        }),
+        claseEnc = clases.filter(function(d) {
+            return d.indexOf('e-') > -1;
+        }),
+        claseEncs = clases.filter(function(d) {
+            return d.indexOf('er-') > -1;
         });
-    $('.img[data-clase="'+ clase[0] +'"]').parents('tr').addClass('hover');
-    d3.selectAll('circle.' + clase[0])
+    $('.img[data-clase="'+ claseCandidato[0] +'"]').parents('tr').addClass('hover');
+    $('.encuestas tr.' + claseEncs[0] + ', .encuestas tr.' + claseEnc[0]).addClass('hover');
+    d3.selectAll('circle.' + claseCandidato[0])
         .attr("r", radio*1.6)
         .classed("circleSelected", true);
     item
@@ -273,6 +280,7 @@ function circleOut() {
         .style("opacity", opacity)
         .classed("circleSelected", false);
     $('.img').parents('tr').removeClass('hover');
+    $('.encuestas tr').removeClass('hover');
 }
 
 function updateChart(filtros) {
