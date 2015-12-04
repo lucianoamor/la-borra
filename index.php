@@ -204,6 +204,7 @@ var idE   = '<?php echo $idE ?>',
 <script src="js/bootstrap.min.js"></script>
 <script src="js/d3.min.js"></script>
 <script src="js/d3-tip.js"></script>
+<script src="js/regression.min.js"></script>
 <script src="data/<?php echo $idE ?>.json"></script>
 <script src="js/chart.js"></script>
 <script>
