@@ -4,6 +4,7 @@ $(document).ready(function() {
         event.preventDefault();
         tablaResultados(idE);
         tablaEncuestas(idE);
+        updateChart($('.form-filtros'));
     });
 
     $('.encuestas').on('click', '.enc-check', function(event) {
@@ -64,6 +65,7 @@ $(document).ready(function() {
         }
         tablaResultados(idE);
         updNEncuestas();
+        updateChart($('.form-filtros'));
     });
 
     $('.tabla-resultados')
@@ -114,7 +116,7 @@ var margin  = {top: 5, right: 10, bottom: 60, left: 40};
     width   = 670,
     height  = 550,
     radio   = 4,
-    yExtra  = 0,
+    yExtra  = 1,
     opacity = .75,
     format  = d3.time.format("%Y-%m-%d"),
     myFormatters = d3.locale({
@@ -138,8 +140,8 @@ data.forEach(function(d) {
 });
 
 var x = d3.time.scale()
-   .domain(d3.extent(data, function(d) { return d.fecha; }))
-   .range([radio, width - margin.right - margin.left]);
+    .domain(d3.extent(data, function(d) { return d.fecha; }))
+    .range([radio, width - margin.right - margin.left]);
 
 var max = d3.max(data, function(d) { return d.resultado; });
 var upper = max + yExtra;
@@ -176,9 +178,9 @@ var tip = d3.tip()
   .attr('class', 'd3-tip')
   .offset([-10, 0])
   .html(function(d) {
-    var t = '<strong>' + d.resultado + '%</strong>' + "<br/>";
+    var t = '<strong>' + d.resultado + '%</strong>' + "<br/>" + formatDateTip(d.fecha) + "<br/>";
     if(d.esRes === 0) {
-        t += formatDateTip(d.fecha) + "<br/><em>" + d.encuestadora + "</em><br/>" + d.poblacion;
+        t += "<em>" + d.encuestadora + "</em><br/>" + d.poblacion;
     } else {
         t += "<em>" + "Resultado" + "</em>";
     }
@@ -193,7 +195,7 @@ svg.selectAll()
     .attr("cx", function(d) { return x(d.fecha); })
     .attr("cy", function(d) { return y(d.resultado); })
     .attr("class", function(d) {
-        var classes = 'c-' + d.candidatoId + ' p-' + d.poblacionId + 'e-' + d.encuestaId;
+        var classes = 'c-' + d.candidatoId + ' p-' + d.poblacionId + ' e-' + d.encuestaId;
         if(d.encuestadora !== null) {
             classes += ' er-' + d.encuestadoraId;
         } else if(d.esRes === 1) {
@@ -203,7 +205,7 @@ svg.selectAll()
     })
     .attr("r", radio)
     .style("opacity", opacity)
-    .style("fill", function(d) { return '#'+d.color })
+    .style("fill", function(d) { return '#' + d.color })
     .on('mouseover', function(d) {
         tip.show(d);
         circleOver(this, d);
@@ -212,9 +214,6 @@ svg.selectAll()
         tip.hide(d);
         circleOut(this, d);
     });
-
-// d3.selectAll('.resultado')
-//     .attr("r", radio*2);
 
 svg.append("g")
     .attr("class", "axis xAxis")
@@ -227,7 +226,7 @@ svg.append("g")
         .attr("transform", "rotate(-45)");
 
 svg.append("g")
-    .attr("class", "axis")
+    .attr("class", "axis yAxis")
     .call(yAxis);
 
 function tablaOver(clase) {
@@ -245,3 +244,131 @@ function circleOut() {
     d3.selectAll('.circleSelected').attr("r", radio).classed("circleSelected", false);
     $('.img').parents('tr').removeClass('hover');
 }
+
+function updateChart(filtros) {
+    filtrosObj = filtros.serializeFormJSON();
+    dataFiltered = data;
+
+    if(filtrosObj.poblacion !== '') {
+        dataFiltered = dataFiltered.filter(function(d) {
+            return d.poblacionId === filtrosObj.poblacion || d.esRes === 1;
+        });
+    }
+
+    if(filtrosObj.from_date !== '0000-00-00') {
+        dataFiltered = dataFiltered.filter(function(d) {
+            return d.fecha >= Date.parse(filtrosObj.from_date) || d.esRes === 1;
+        });
+    }
+
+    if(filtrosObj['encuestadoras[]']) {
+        if(!Array.isArray(filtrosObj['encuestadoras[]'])) {
+            var encuestadoras = [];
+            encuestadoras[0] = filtrosObj['encuestadoras[]'];
+        } else {
+            var encuestadoras = filtrosObj['encuestadoras[]'];
+        }
+        dataFiltered = dataFiltered.filter(function(d) {
+            if(d.esRes === 1) {
+                return true;
+            }
+            if(encuestadoras.indexOf(d.encuestadoraId) > -1) {
+                return false;
+            } else {
+                return true;
+            }
+        });
+    }
+
+    if(filtrosObj['encuestas[]']) {
+        if(!Array.isArray(filtrosObj['encuestas[]'])) {
+            var encuestas = [];
+            encuestas[0] = filtrosObj['encuestas[]'];
+        } else {
+            var encuestas = filtrosObj['encuestas[]'];
+        }
+        dataFiltered = dataFiltered.filter(function(d) {
+            if(d.esRes === 1) {
+                return true;
+            }
+            if(encuestas.indexOf(d.encuestaId) > -1) {
+                return false;
+            } else {
+                return true;
+            }
+        });
+    }
+
+    x.domain(d3.extent(dataFiltered, function(d) { return d.fecha; }));
+
+    var max = d3.max(dataFiltered, function(d) { return d.resultado; });
+    var upper = max + yExtra;
+    y.domain([0, upper]);
+
+    svg.selectAll("circle")
+        .transition()
+            .duration(750)
+            .attr("r", 0)
+            .style("opacity", 0)
+            .remove();
+
+    svg.selectAll()
+        .data(dataFiltered)
+      .enter().append("circle")
+        .attr("cx", function(d) { return x(d.fecha); })
+        .attr("cy", function(d) { return y(d.resultado); })
+        .attr("class", function(d) {
+            var classes = 'c-' + d.candidatoId + ' p-' + d.poblacionId + ' e-' + d.encuestaId;
+            if(d.encuestadora !== null) {
+                classes += ' er-' + d.encuestadoraId;
+            } else if(d.esRes === 1) {
+                classes += ' resultado';
+            }
+            return classes;
+        })
+        .attr("r", 0)
+        .style("opacity", 0)
+        .style("fill", function(d) { return '#' + d.color })
+        .on('mouseover', function(d) {
+            tip.show(d);
+            circleOver(this, d);
+        })
+        .on('mouseout', function(d) {
+            tip.hide(d);
+            circleOut(this, d);
+        })
+        .transition()
+            .duration(750)
+            .style("opacity", opacity)
+            .attr("r", radio);
+
+    svg.select(".axis.xAxis").transition()
+        .duration(750)
+        .call(xAxis)
+            .selectAll("text")
+            .style("text-anchor", "end")
+            .attr("dx", "-.8em")
+            .attr("dy", ".15em")
+            .attr("transform", "rotate(-45)");
+    svg.select(".axis.yAxis").transition()
+        .duration(750)
+        .call(yAxis);
+}
+
+(function($) {
+$.fn.serializeFormJSON = function() {
+   var o = {};
+   var a = this.serializeArray();
+   $.each(a, function() {
+       if (o[this.name]) {
+           if (!o[this.name].push) {
+               o[this.name] = [o[this.name]];
+           }
+           o[this.name].push(this.value || '');
+       } else {
+           o[this.name] = this.value || '';
+       }
+   });
+   return o;
+};
+})(jQuery);
