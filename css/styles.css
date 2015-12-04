@@ -9,7 +9,7 @@ h1, .h1, h2, .h2, h3, .h3 {
     background-color: #E0E0E0;
 }
 nav {
-    background: url('../images/bg.gif') no-repeat bottom left;
+    background: url('../images/bg.gif') no-repeat top left;
 }
 .navbar-default .navbar-brand {
     color: #000;
