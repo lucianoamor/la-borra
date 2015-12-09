@@ -239,24 +239,26 @@ for (var i = 0; i < dataL; i++) {
 var candidatosL = candidatos.length;
 for (var i = 0; i < candidatosL; i++) {
     var dataCandidato = data.filter(function(d) {
-        return d.candidatoId === candidatos[i] && d.esRes === 0 && d.esRes === 0;
+        return d.candidatoId === candidatos[i] && d.esRes === 0;
     });
     dataCandidato = dataCandidato.sort(function(a, b) {
         return a["fecha"] - b["fecha"];
     });
-    var dataRegresion = [];
-    dataCandidato.forEach(function(d) {
-        dataRegresion.push([d.fecha.getTime(), d.resultado]);
-    });
-    var regresion = regression('polynomial', dataRegresion, 3).points;
-    regresion.forEach(function(d) {
-        d[0] = new Date(d[0]);
-    });
-    svg.append("path")
-        .attr("d", valueline(regresion))
-        .attr("class", "line c-" + dataCandidato[0].candidatoId)
-        .attr("stroke", "#" + dataCandidato[0].color)
-        .attr("stroke-width", stroke);
+    if(dataCandidato.length > 0) {
+        var dataRegresion = [];
+        dataCandidato.forEach(function(d) {
+            dataRegresion.push([d.fecha.getTime(), d.resultado]);
+        });
+        var regresion = regression('polynomial', dataRegresion, 3).points;
+        regresion.forEach(function(d) {
+            d[0] = new Date(d[0]);
+        });
+        svg.append("path")
+            .attr("d", valueline(regresion))
+            .attr("class", "line c-" + dataCandidato[0].candidatoId)
+            .attr("stroke", "#" + dataCandidato[0].color)
+            .attr("stroke-width", stroke);
+    }
 }
 
 // tip
