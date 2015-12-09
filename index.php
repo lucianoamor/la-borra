@@ -8,17 +8,21 @@ $elecciones = array();
 $sql = "select id, idAT, nombre, fecha from elecciones order by fecha desc, nombre asc";
 $res = $bd->query($sql);
 while($fila = $res->fetch_assoc()) {
+    $sqlEnc = "select id from encuestas where eleccion = '".$fila["idAT"]."' and esResultado = 0";
+    $resEnc = $bd->query($sqlEnc);
     $elecciones[$fila["id"]] = array(
         "nombre" =>$fila["nombre"],
-        "idAT"   => $fila["idAT"],
-        "fecha"  =>Funciones::fecha($fila["fecha"])
+        "idAT"   =>$fila["idAT"],
+        "fecha"  =>Funciones::fecha($fila["fecha"]),
+        "n"      =>$resEnc->num_rows
     );
 }
 if(count($elecciones) == 0) {
     $elecciones[0] = array(
         "nombre" =>"",
-        "idAT"   => "",
-        "fecha"  =>""
+        "idAT"   =>"",
+        "fecha"  =>"",
+        "n"      =>0
     );
 }
 // valida id
@@ -60,7 +64,7 @@ include("header.php");
                         <div class="row">
                             <div class="col-xs-10">
                                 <p class="fecha"><?php echo $elecciones[$idE]["fecha"] ?></p>
-                                <p><?php echo $elecciones[$idE]["nombre"] ?></p>
+                                <p><?php echo $elecciones[$idE]["nombre"] ?> <span>[<?php echo $elecciones[$idE]["n"] ?>]</span></p>
                             </div>
                             <div class="col-xs-2">
                                 <i class="icon-chevron-sign-down icon-2x btn btn-warning btn-lg btn-eleccion pull-right"></i>
@@ -73,7 +77,7 @@ foreach ($elecciones as $k => $v) {
     if($k == $idE)
         continue;
 ?>
-                        <li><a href="?e=<?php echo $k ?>"><span><?php echo $v["fecha"] ?></span> <?php echo $v["nombre"] ?></a></li>
+                        <li><a href="?e=<?php echo $k ?>"><span><?php echo $v["fecha"] ?></span> <?php echo $v["nombre"] ?> <span>[<?php echo $v["n"] ?>]</span></a></li>
 <?php
 }
 ?>

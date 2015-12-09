@@ -40,6 +40,10 @@ nav {
     margin: 0;
     padding-top: 3px;
 }
+.competencia p span {
+    font-size: .8em;
+    opacity: .7;
+}
 .competencia p.fecha {
     font-size: 1.2em;
     opacity: .7;
