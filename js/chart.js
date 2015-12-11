@@ -400,12 +400,16 @@ function updateChart(filtros) {
     }
 
     // ejes
-    var nTicksX = d3.time.month.range(d3.min(dataFiltered, function(d) { return d.fecha; }), d3.max(dataFiltered, function(d) { return d.fecha; }), 1).length,
-        interv  = d3.time.month,
-        step    = Math.ceil(nTicksX / 10);
+    var interv = d3.time.month,
+        nTicksX = interv.range(d3.min(dataFiltered, function(d) { return d.fecha; }), d3.max(dataFiltered, function(d) { return d.fecha; }), 1).length,
+        step = Math.ceil(nTicksX / 10);
     if(nTicksX < 2) {
         interv = d3.time.week;
-        step   = 1;
+        nTicksX = interv.range(d3.min(dataFiltered, function(d) { return d.fecha; }), d3.max(dataFiltered, function(d) { return d.fecha; }), 1).length;
+        step = 1;
+        if(nTicksX === 0) {
+            interv = d3.time.day;
+        }
     }
     xAxis.ticks(interv, step);
 
