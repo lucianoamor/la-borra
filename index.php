@@ -57,8 +57,8 @@ while($fila = $res->fetch_assoc()) {
 include("header.php");
 ?>
     <div class="row">
-        <div class="col-sm-6 tile competencia">
-            <div class="row">
+        <div class="col-sm-6">
+            <div class="row tile competencia">
                 <div class="col-xs-12">
                     <div type="role" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <div class="row">
@@ -77,131 +77,137 @@ foreach ($elecciones as $k => $v) {
     if($k == $idE)
         continue;
 ?>
-                        <li><a href="?e=<?php echo $k ?>"><span><?php echo $v["fecha"] ?></span> <?php echo $v["nombre"] ?> <span>[<?php echo $v["n"] ?>]</span></a></li>
+                      <li><a href="?e=<?php echo $k ?>"><span><?php echo $v["fecha"] ?></span> <?php echo $v["nombre"] ?> <span>[<?php echo $v["n"] ?>]</span></a></li>
 <?php
 }
 ?>
                     </ul>
                 </div>
             </div>
-        </div>
-        <div class="col-sm-6 tile filtros">
+
             <form class="form-inline form-filtros">
-                <div class="row">
-                    <div class="col-xs-6">
-                        <div class="form-group">
-                            <label for="from_date">Desde fecha:</label>
-                            <select class="form-control" id="from_date" name="from_date">
-                                <option value="0000-00-00">Todas</option>
+            <div class="row tile filtros">
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label for="from_date">Desde fecha:</label>
+                        <select class="form-control" id="from_date" name="from_date">
+                            <option value="0000-00-00">Todas</option>
 <?php
 foreach ($fechas as $k => $v) {
 ?>
-                                <option value="<?php echo $k ?>"><?php echo $v ?></option>
+                            <option value="<?php echo $k ?>"><?php echo $v ?></option>
 <?php
 }
 ?>
-                            </select>
-                        </div>
+                        </select>
                     </div>
-                    <div class="col-xs-6">
-                        <div class="form-group">
-                            <label for="poblacion">Población:</label>
-                            <select class="form-control" id="poblacion" name="poblacion">
-                                <option value="">Todas</option>
+                </div>
+                <div class="col-xs-6">
+                    <div class="form-group">
+                        <label for="poblacion">Población:</label>
+                        <select class="form-control" id="poblacion" name="poblacion">
+                            <option value="">Todas</option>
 <?php
 foreach ($poblaciones as $k => $v) {
 ?>
-                                <optgroup label="<?php echo $k ?>">
+                            <optgroup label="<?php echo $k ?>">
 <?php
     foreach ($v as $vv) {
 ?>
-                                    <option value="<?php echo $vv["idAT"] ?>"><?php echo $vv["nombre"] ?></option>
+                                <option value="<?php echo $vv["idAT"] ?>"><?php echo $vv["nombre"] ?></option>
 <?php
     }
 ?>
-                                </optgroup>
+                            </optgroup>
 <?php
 }
 ?>
-                            </select>
-                        </div>
+                        </select>
                     </div>
                 </div>
+            </div>
             </form>
+            <div class="row tile tabla">
+                <table class="table table-hover tabla-head">
+                    <thead>
+                    <tr>
+                        <th class="th-col-img"></th>
+                        <th class="th-col"><span title="promedio" class="tooltip-trigger">AVG<br/><span class="unidad">%</span></span></th>
+                        <th class="th-col"><span title="mínimo" class="tooltip-trigger">MIN<br/><span class="unidad">%</span></span></th>
+                        <th class="th-col"><span title="máximo" class="tooltip-trigger">MAX<br/><span class="unidad">%</span></span></th>
+                        <th class="th-col"><span title="coeficiente de variación" class="tooltip-trigger">CV<br/><span class="unidad">%</span></span></th>
+                        <th class="th-col"><span title="encuestas en las que el candidato figura en el primer puesto" class="tooltip-trigger">N1<br/><span class="unidad">#</span></span></th>
+                        <th class="th-col"><span title="observaciones (encuestas)" class="tooltip-trigger">OBS<br/><span class="unidad">#</span></span></th>
+                        <th class="th-col img"><span title="ver/ocultar círculos y/o líneas" class="tooltip-trigger"><img src="images/chart.png" alt="" /></span></th>
+                        <th class="resultado th-col"><span title="resultado final" class="tooltip-trigger">R<br/><span class="unidad">%</span></span></th>
+                    </tr>
+                    </thead>
+                </table>
+                <div class="tabla-inner simplebar">
+                    <table class="table table-hover tabla-resultados">
+                        <tbody></tbody>
+                    </table>
+                </div>
+                <!--
+                <table class="table table-hover">
+                    <tfoot>
+                        <tr>
+                            <td colspan="9">
+                                <h5>Referencias:</h5>
+                                <table class="table table-condensed">
+                                    <tbody>
+                                    <tr>
+                                        <td class="ref">AVG</td>
+                                        <td>promedio</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="ref">MIN</td>
+                                        <td>mínimo</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="ref">MAX</td>
+                                        <td>máximo</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="ref">CV</td>
+                                        <td>coeficiente de variación</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="ref">N1</td>
+                                        <td>encuestas en las que el candidato figura en el primer puesto</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="ref">OBS</td>
+                                        <td>observaciones (encuestas)</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="ref"><img src="images/chart.png" alt="" /></td>
+                                        <td>ver/ocultar círculos y/o líneas</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="ref resultado">R</td>
+                                        <td>resultado final</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+                 -->
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="row tile tooltip-fijo">
+                tooltip
+            </div>
+            <div class="row tile grafico">
+                <div class="borra" id="borra"></div>
+            </div>
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-5 tile tabla">
-            <table class="table table-hover tabla-head">
-                <thead>
-                <tr>
-                    <th></th>
-                    <th class="th-col"><span title="promedio" class="tooltip-trigger">AVG<br/><span class="unidad">%</span></span></th>
-                    <th class="th-col"><span title="mínimo" class="tooltip-trigger">MIN<br/><span class="unidad">%</span></span></th>
-                    <th class="th-col"><span title="máximo" class="tooltip-trigger">MAX<br/><span class="unidad">%</span></span></th>
-                    <th class="th-col"><span title="coeficiente de variación" class="tooltip-trigger">CV<br/><span class="unidad">%</span></span></th>
-                    <th class="th-col"><span title="encuestas en las que el candidato figura en el primer puesto" class="tooltip-trigger">N1<br/><span class="unidad">#</span></span></th>
-                    <th class="th-col"><span title="observaciones (encuestas)" class="tooltip-trigger">OBS<br/><span class="unidad">#</span></span></th>
-                    <th class="th-col img"><span title="ver/ocultar círculos y/o líneas" class="tooltip-trigger"><img src="images/chart.png" alt="" /></span></th>
-                    <th class="resultado th-col"><span title="resultado final" class="tooltip-trigger">R<br/><span class="unidad">%</span></span></th>
-                </tr>
-                </thead>
-            </table>
-            <div class="tabla-inner simplebar">
-                <table class="table table-hover tabla-resultados">
-                    <tbody></tbody>
-                </table>
-            </div>
-            <!--
-            <table class="table table-hover">
-                <tfoot>
-                    <tr>
-                        <td colspan="9">
-                            <h5>Referencias:</h5>
-                            <table class="table table-condensed">
-                                <tbody>
-                                <tr>
-                                    <td class="ref">AVG</td>
-                                    <td>promedio</td>
-                                </tr>
-                                <tr>
-                                    <td class="ref">MIN</td>
-                                    <td>mínimo</td>
-                                </tr>
-                                <tr>
-                                    <td class="ref">MAX</td>
-                                    <td>máximo</td>
-                                </tr>
-                                <tr>
-                                    <td class="ref">CV</td>
-                                    <td>coeficiente de variación</td>
-                                </tr>
-                                <tr>
-                                    <td class="ref">N1</td>
-                                    <td>encuestas en las que el candidato figura en el primer puesto</td>
-                                </tr>
-                                <tr>
-                                    <td class="ref">OBS</td>
-                                    <td>observaciones (encuestas)</td>
-                                </tr>
-                                <tr>
-                                    <td class="ref"><img src="images/chart.png" alt="" /></td>
-                                    <td>ver/ocultar círculos y/o líneas</td>
-                                </tr>
-                                <tr>
-                                    <td class="ref resultado">R</td>
-                                    <td>resultado final</td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </td>
-                    </tr>
-                </tfoot>
-            </table>
-             -->
-        </div>
-        <div class="col-xs-7 tile grafico">
-            <div class="borra" id="borra"></div>
+        <div class="col-xs-12">
             <form class="form-filtros">
                 <div class="encuestas"></div>
             </form>

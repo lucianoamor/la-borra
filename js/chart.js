@@ -177,8 +177,8 @@ if(location.search === '' && typeof history.replaceState !== 'undefined') {
 
 // d3
 var margin  = {top: 5, right: 10, bottom: 60, left: 40};
-    width   = 670,
-    height  = 490,
+    width   = 555,
+    height  = 450,
     radio   = 4,
     yExtra  = 1,
     opacity = .75,
