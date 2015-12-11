@@ -139,7 +139,7 @@ foreach ($poblaciones as $k => $v) {
                         <th class="th-col"><span title="encuestas en las que el candidato figura en el primer puesto" class="tooltip-trigger">N1<br/><span class="unidad">#</span></span></th>
                         <th class="th-col"><span title="observaciones (encuestas)" class="tooltip-trigger">OBS<br/><span class="unidad">#</span></span></th>
                         <th class="th-col img"><span title="ver/ocultar círculos y/o líneas" class="tooltip-trigger"><img src="images/chart.png" alt="" /></span></th>
-                        <th class="resultado th-col"><span title="resultado final" class="tooltip-trigger">R<br/><span class="unidad">%</span></span></th>
+                        <th class="resultado th-col th-col-center"><span title="resultado final" class="tooltip-trigger">R<br/><span class="unidad">%</span></span></th>
                     </tr>
                     </thead>
                 </table>

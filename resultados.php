@@ -116,7 +116,7 @@ foreach ($intencion as $k => $v) {
     }
     $n1[$k] = $maxEncuesta[$k];
     if(!isset($resultados[$k]))
-        $resultados[$k] = "-";
+        $resultados[$k] = "";
 }
 arsort($avg);
 
@@ -126,14 +126,14 @@ foreach ($avg as $k => $v) {
         <td class="text-center">
             <img src="'.$candidatos[$k]["imagen"].'" title="'.$candidatos[$k]["nombre"].'" alt="'.$candidatos[$k]["nombre"].'" class="img" style="border-color:#'.$candidatos[$k]["color"].';" data-content="<small>'.$candidatos[$k]["agrupacion"].'</small>" data-clase="c-'.$k.'" />
         </td>
-        <td class="text-center td-col">'.number_format($v, 1, ",", "").'</td>
-        <td class="text-center td-col">'.number_format($min[$k], 1, ",", "").'</td>
-        <td class="text-center td-col">'.number_format($max[$k], 1, ",", "").'</td>
-        <td class="text-center td-col">'.number_format($cv[$k], 1, ",", "").'</td>
-        <td class="text-center td-col">'.$n1[$k].'</td>
-        <td class="text-center td-col">'.$n[$k].'</td>
-        <td class="text-center td-col"><button type="button" class="btn btn-default btn-xs btn-hide-circles" data-candidato="'.$k.'"><i class="icon-check"></i></button><br/><button type="button" class="btn btn-default btn-xs btn-hide-lines" data-candidato="'.$k.'"><i class="icon-check"></i></button></td>
-        <td class="resultado text-center td-col">'.(is_numeric($resultados[$k]) ? number_format($resultados[$k], 1, ",", "") : $resultados[$k]).'</td>
+        <td class="td-col">'.number_format($v, 1, ",", "").'</td>
+        <td class="td-col">'.number_format($min[$k], 1, ",", "").'</td>
+        <td class="td-col">'.number_format($max[$k], 1, ",", "").'</td>
+        <td class="td-col">'.number_format($cv[$k], 1, ",", "").'</td>
+        <td class="td-col">'.$n1[$k].'</td>
+        <td class="td-col">'.$n[$k].'</td>
+        <td class="td-col td-col-center"><button type="button" class="btn btn-default btn-xs btn-hide-circles" data-candidato="'.$k.'"><i class="icon-check"></i></button><br/><button type="button" class="btn btn-default btn-xs btn-hide-lines" data-candidato="'.$k.'"><i class="icon-check"></i></button></td>
+        <td class="resultado td-col td-col-center">'.(is_numeric($resultados[$k]) ? number_format($resultados[$k], 1, ",", "") : $resultados[$k]).'</td>
     </tr>';
 }
 

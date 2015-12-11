@@ -99,6 +99,9 @@ nav {
 .tabla th {
     text-align: center;
 }
+.table > thead > tr > th {
+    padding: 5px;
+}
 .tabla table > thead > tr > th {
     border: 0;
     background-color: #ddd;
@@ -114,6 +117,7 @@ nav {
 .tabla th.th-col,
 .tabla td.td-col {
     width: 10%;
+    text-align: right;
 }
 .tabla th.th-col-img {
     min-width: 44px;
@@ -121,6 +125,11 @@ nav {
 }
 .tabla th.th-col.img {
     vertical-align: middle;
+    text-align: center;
+}
+.tabla td.td-col-center,
+.tabla th.th-col-center {
+    text-align: center;
 }
 .tabla .prediccion {
     background-color: #EC971F;
@@ -141,7 +150,7 @@ nav {
 .tabla tbody tr td {
     vertical-align: middle;
     font-size: 14px;
-    padding: 5px 2px;
+    padding: 5px 4px 5px 0;
 }
 .tabla td .img {
     width: 44px;
