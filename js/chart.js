@@ -176,9 +176,9 @@ if(location.search === '' && typeof history.replaceState !== 'undefined') {
 }
 
 // d3
-var margin  = {top: 5, right: 10, bottom: 60, left: 40};
+var margin  = {top: 5, right: 13, bottom: 25, left: 30};
     width   = 555,
-    height  = 450,
+    height  = 440,
     radio   = 4,
     yExtra  = 4,
     opacity = .75,
@@ -216,7 +216,7 @@ var y = d3.scale.linear()
 
 var xAxis = d3.svg.axis()
     .scale(x)
-    .tickFormat(myFormatters.timeFormat("%d/%m/%Y"))
+    .tickFormat(myFormatters.timeFormat("%d/%m/%y"))
     .orient("bottom");
 
 var yAxis = d3.svg.axis()
@@ -295,12 +295,7 @@ svg.call(tip);
 svg.append("g")
     .attr("class", "axis xAxis")
     .attr("transform", "translate(0," + y.range()[0] + ")")
-    .call(xAxis)
-    .selectAll("text")
-        .style("text-anchor", "end")
-        .attr("dx", "-.8em")
-        .attr("dy", ".15em")
-        .attr("transform", "rotate(-45)");
+    .call(xAxis);
 
 svg.append("g")
     .attr("class", "axis yAxis")
@@ -404,10 +399,27 @@ function updateChart(filtros) {
         }
     }
 
+    // ejes
+    var nTicksX = d3.time.month.range(d3.min(dataFiltered, function(d) { return d.fecha; }), d3.max(dataFiltered, function(d) { return d.fecha; }), 1).length,
+        interv  = d3.time.month,
+        step    = Math.ceil(nTicksX / 10);
+    if(nTicksX < 2) {
+        interv = d3.time.week;
+        step   = 1;
+    }
+    xAxis.ticks(interv, step);
+
     x.domain(d3.extent(dataFiltered, function(d) { return d.fecha; }));
     var max = d3.max(dataFiltered, function(d) { return d.resultado; });
     var upper = max + yExtra;
     y.domain([0, upper]);
+
+    svg.select(".axis.xAxis").transition()
+        .duration(750)
+        .call(xAxis);
+    svg.select(".axis.yAxis").transition()
+        .duration(750)
+        .call(yAxis);
 
     // circulos
     svg.selectAll("circle")
@@ -496,19 +508,6 @@ function updateChart(filtros) {
             .duration(750)
                 .style("opacity", 0);
     }
-
-    // ejes
-    svg.select(".axis.xAxis").transition()
-        .duration(750)
-        .call(xAxis)
-            .selectAll("text")
-            .style("text-anchor", "end")
-            .attr("dx", "-.8em")
-            .attr("dy", ".15em")
-            .attr("transform", "rotate(-45)");
-    svg.select(".axis.yAxis").transition()
-        .duration(750)
-        .call(yAxis);
 }
 
 (function($) {

@@ -84,7 +84,6 @@ foreach ($elecciones as $k => $v) {
                     </ul>
                 </div>
             </div>
-
             <form class="form-inline form-filtros">
             <div class="row tile filtros">
                 <div class="col-xs-6">
