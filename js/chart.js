@@ -148,6 +148,9 @@ $(document).ready(function() {
     tablaResultados(idE);
     tablaEncuestas(idE);
     updateChart();
+    $('.simplebar-scroll-content').animate({
+        scrollTop: 0
+    }, 1000);
 
 });
 
@@ -324,6 +327,9 @@ function circleOver(t) {
             return d.indexOf('er-') > -1;
         });
     $('.img[data-clase="'+ claseCandidato[0] +'"]').parents('tr').addClass('hover');
+    $('.simplebar-scroll-content').animate({
+        scrollTop: $('.img[data-clase="'+ claseCandidato[0] +'"]')[0].y - 5
+    }, 1000);
     $('.encuestas tr.' + claseEncs[0] + ', .encuestas tr.' + claseEnc[0]).addClass('hover');
     d3.selectAll('circle.' + claseCandidato[0])
         .attr("r", radio*1.6)
