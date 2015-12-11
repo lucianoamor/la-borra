@@ -44,7 +44,7 @@ if(count($filtros) == 0)
 
 $encuestas     = array();
 $encuestadoras = array();
-$sql = "select enc.idAT as encuesta, enc.fecha, enc.fuente, encs.idAT as encuestadoraID, encs.nombre as encuestadora, p.nombre as poblacion from encuestas as enc left join encuestadoras as encs on enc.encuestadora = encs.idAT left join poblacion as p on enc.poblacion = p.idAT left join elecciones as e on enc.eleccion = e.idAT where e.id = $idE and enc.esResultado = 0 and ".implode(" and ", $filtros)." order by enc.fecha desc, p.nivel asc";
+$sql = "select enc.idAT as encuesta, enc.fecha, enc.fuente, encs.idAT as encuestadoraID, encs.nombre as encuestadora, p.nombre as poblacion from encuestas as enc left join encuestadoras as encs on enc.encuestadora = encs.idAT left join poblacion as p on enc.poblacion = p.idAT left join elecciones as e on enc.eleccion = e.idAT where e.id = $idE and enc.esResultado = 0 and ".implode(" and ", $filtros)." order by encs.nombre asc, enc.fecha desc, p.nivel asc";
 $res = $bd->query($sql);
 if($res->num_rows > 0) {
     while($fila = $res->fetch_assoc()) {
