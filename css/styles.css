@@ -230,11 +230,11 @@ nav {
 .encuestas table {
     margin-bottom: 0;
 }
-.encuestas .table-hover > tbody > tr:hover,
-.encuestas .table-hover > tbody > tr.hover {
+.encuestas td:hover,
+.encuestas td.hover {
     background-color: #019F00;
 }
-.encuestas table tr.unchecked {
+.encuestas table td.unchecked {
     opacity: .7;
     background-color: #8B9F8B;
 }
@@ -245,7 +245,7 @@ nav {
     font-size: 13px;
 }
 .encuestas .encuestadora {
-    width: 50px;
+    width: 25%;
 }
 .encuestas .encuestadora .enc-check {
     padding: 1px 10px;

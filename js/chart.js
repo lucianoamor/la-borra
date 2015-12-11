@@ -1,67 +1,67 @@
 $(document).ready(function() {
 
-    $('#from_date, #poblacion').change(function(event) {
+    $('.filtros').on('change', '#from_date, #poblacion', function(event) {
         event.preventDefault();
+        updateChart($('.form-filtros'));
         tablaResultados(idE);
         tablaEncuestas(idE);
-        updateChart($('.form-filtros'));
     });
 
     $('.encuestas').on('click', '.enc-check', function(event) {
         event.preventDefault();
         var inp  = $(this).siblings('input'),
             icon = $(this).children('i'),
-            tr   = $(this).parents('tr');
+            tr   = $(this).parents('td');
         if(inp.is(':disabled')) {
             inp.prop('disabled', false);
             icon.removeClass().addClass('icon-check-empty');
             $(this).removeClass('btn-success').addClass('btn-default');
             tr.addClass('unchecked');
-            if($(this).hasClass('encs-check')) {
-                // es padre
-                var trH   = tr.nextUntil('tr.tr-encs'),
-                    btnH  = trH.find('.enc-check'),
-                    inpH  = btnH.siblings('input'),
-                    iconH = btnH.children('i');
-                inpH.prop('disabled', false);
-                iconH.removeClass().addClass('icon-check-empty');
-                btnH.removeClass('btn-success').addClass('btn-default');
-                trH.addClass('unchecked');
-            } else if(tr.nextUntil('tr.tr-encs').find('input:disabled').length + tr.prevUntil('tr.tr-encs').find('input:disabled').length === 0) {
-                var trP   = tr.prevAll('tr.tr-encs').first(),
-                    btnP  = trP.find('.enc-check'),
-                    inpP  = btnP.siblings('input'),
-                    iconP = btnP.children('i');
-                inpP.prop('disabled', false);
-                iconP.removeClass().addClass('icon-check-empty');
-                btnP.removeClass('btn-success').addClass('btn-default');
-                trP.addClass('unchecked');
-            }
+            // if($(this).hasClass('encs-check')) {
+            //     // es padre
+            //     var trH   = tr.nextUntil('tr.tr-encs'),
+            //         btnH  = trH.find('.enc-check'),
+            //         inpH  = btnH.siblings('input'),
+            //         iconH = btnH.children('i');
+            //     inpH.prop('disabled', false);
+            //     iconH.removeClass().addClass('icon-check-empty');
+            //     btnH.removeClass('btn-success').addClass('btn-default');
+            //     trH.addClass('unchecked');
+            // } else if(tr.nextUntil('tr.tr-encs').find('input:disabled').length + tr.prevUntil('tr.tr-encs').find('input:disabled').length === 0) {
+            //     var trP   = tr.prevAll('tr.tr-encs').first(),
+            //         btnP  = trP.find('.enc-check'),
+            //         inpP  = btnP.siblings('input'),
+            //         iconP = btnP.children('i');
+            //     inpP.prop('disabled', false);
+            //     iconP.removeClass().addClass('icon-check-empty');
+            //     btnP.removeClass('btn-success').addClass('btn-default');
+            //     trP.addClass('unchecked');
+            // }
         } else {
             inp.prop('disabled', true);
             icon.removeClass().addClass('icon-check');
             $(this).removeClass('btn-default').addClass('btn-success');
             tr.removeClass('unchecked');
-            if($(this).hasClass('encs-check')) {
-                // es padre
-                var trH   = tr.nextUntil('tr.tr-encs'),
-                    btnH  = trH.find('.enc-check'),
-                    inpH  = btnH.siblings('input'),
-                    iconH = btnH.children('i');
-                inpH.prop('disabled', true);
-                iconH.removeClass().addClass('icon-check');
-                btnH.removeClass('btn-default').addClass('btn-success');
-                trH.removeClass('unchecked');
-            } else {
-                var trP   = tr.prevAll('tr.tr-encs').first(),
-                    btnP  = trP.find('.enc-check'),
-                    inpP  = btnP.siblings('input'),
-                    iconP = btnP.children('i');
-                inpP.prop('disabled', true);
-                iconP.removeClass().addClass('icon-check');
-                btnP.removeClass('btn-default').addClass('btn-success');
-                trP.removeClass('unchecked');
-            }
+            // if($(this).hasClass('encs-check')) {
+            //     // es padre
+            //     var trH   = tr.nextUntil('tr.tr-encs'),
+            //         btnH  = trH.find('.enc-check'),
+            //         inpH  = btnH.siblings('input'),
+            //         iconH = btnH.children('i');
+            //     inpH.prop('disabled', true);
+            //     iconH.removeClass().addClass('icon-check');
+            //     btnH.removeClass('btn-default').addClass('btn-success');
+            //     trH.removeClass('unchecked');
+            // } else {
+            //     var trP   = tr.prevAll('tr.tr-encs').first(),
+            //         btnP  = trP.find('.enc-check'),
+            //         inpP  = btnP.siblings('input'),
+            //         iconP = btnP.children('i');
+            //     inpP.prop('disabled', true);
+            //     iconP.removeClass().addClass('icon-check');
+            //     btnP.removeClass('btn-default').addClass('btn-success');
+            //     trP.removeClass('unchecked');
+            // }
         }
         tablaResultados(idE);
         updNEncuestas();
@@ -111,11 +111,11 @@ $(document).ready(function() {
     });
 
     $('.encuestas')
-    .on('mouseenter', 'tr', function () {
+    .on('mouseenter', 'td', function () {
         var clase = $(this).attr('data-clase');
         tablaOver(clase);
     })
-    .on('mouseleave', 'tr', function () {
+    .on('mouseleave', 'td', function () {
         d3.selectAll('.circleSelected')
             .attr("r", radio)
             .attr("stroke-width", stroke)
@@ -303,7 +303,7 @@ svg.append("g")
 
 // funciones
 function tablaOver(clase) {
-    d3.selectAll('.' + clase)
+    d3.selectAll('circle.' + clase)
         .attr("r", radio*1.6)
         .attr("stroke-width", stroke*2)
         .classed("circleSelected", true);
@@ -325,7 +325,7 @@ function circleOver(t) {
     $('.simplebar-scroll-content').animate({
         scrollTop: $('.img[data-clase="'+ claseCandidato[0] +'"]')[0].y - 6
     }, 1000);
-    $('.encuestas tr.' + claseEncs[0] + ', .encuestas tr.' + claseEnc[0]).addClass('hover');
+    $('.encuestas td.' + claseEncs[0] + ', .encuestas td.' + claseEnc[0]).addClass('hover');
     d3.selectAll('circle.' + claseCandidato[0])
         .attr("r", radio*1.6)
         .classed("circleSelected", true);
@@ -340,14 +340,13 @@ function circleOut() {
         .style("opacity", opacity)
         .classed("circleSelected", false);
     $('.img').parents('tr').removeClass('hover');
-    $('.encuestas tr').removeClass('hover');
+    $('.encuestas td').removeClass('hover');
 }
 
 function updateChart(filtros) {
     var dataFiltered = data;
     if(filtros) {
         var filtrosObj = filtros.serializeFormJSON();
-
         if(filtrosObj.poblacion !== '') {
             dataFiltered = dataFiltered.filter(function(d) {
                 return d.poblacionId === filtrosObj.poblacion || d.esRes === 1;
@@ -379,24 +378,24 @@ function updateChart(filtros) {
             });
         }
 
-        if(filtrosObj['encuestas[]']) {
-            if(!Array.isArray(filtrosObj['encuestas[]'])) {
-                var encuestas = [];
-                encuestas[0] = filtrosObj['encuestas[]'];
-            } else {
-                var encuestas = filtrosObj['encuestas[]'];
-            }
-            dataFiltered = dataFiltered.filter(function(d) {
-                if(d.esRes === 1) {
-                    return true;
-                }
-                if(encuestas.indexOf(d.encuestaId) > -1) {
-                    return false;
-                } else {
-                    return true;
-                }
-            });
-        }
+        // if(filtrosObj['encuestas[]']) {
+        //     if(!Array.isArray(filtrosObj['encuestas[]'])) {
+        //         var encuestas = [];
+        //         encuestas[0] = filtrosObj['encuestas[]'];
+        //     } else {
+        //         var encuestas = filtrosObj['encuestas[]'];
+        //     }
+        //     dataFiltered = dataFiltered.filter(function(d) {
+        //         if(d.esRes === 1) {
+        //             return true;
+        //         }
+        //         if(encuestas.indexOf(d.encuestaId) > -1) {
+        //             return false;
+        //         } else {
+        //             return true;
+        //         }
+        //     });
+        // }
     }
 
     // ejes
@@ -467,7 +466,7 @@ function updateChart(filtros) {
     var dataL = dataFiltered.length,
         candidatos = [];
     for (var i = 0; i < dataL; i++) {
-        if(candidatos.indexOf(dataFiltered[i].candidatoId) === -1) {
+        if(candidatos.indexOf(dataFiltered[i].candidatoId) === -1 && dataFiltered[i].esRes === 0) {
             candidatos.push(dataFiltered[i].candidatoId);
         }
     }

@@ -70,9 +70,13 @@ if($res->num_rows == 1)
     $txtEnc = "encuesta";
 $data["tabla"] .= '
 <p class="pull-left"><span class="nEnc">'.$res->num_rows.'</span> '.$txtEnc.'</p>
-<table class="table table-hover table-condensed">
+<table class="table table-condensed">
     <tbody>';
+$i = 0;
+$total = count($encuestadoras);
 foreach ($encuestadoras as $k => $v) {
+    if($i == 0)
+        $data["tabla"] .= '<tr>';
     $icon      = "icon-check";
     $btnStatus = "disabled";
     $btnClass  = "btn-success";
@@ -84,33 +88,38 @@ foreach ($encuestadoras as $k => $v) {
         $trClass   = "unchecked";
     }
     $data["tabla"] .= '
-        <tr class="tr-encs '.$trClass.' er-'.$k.'" data-clase="er-'.$k.'">
-            <td class="encuestadora"><button type="button" class="btn btn-xs '.$btnClass.' enc-check encs-check"><i class="'.$icon.'"></i></button><input type="hidden" name="encuestadoras[]" value="'.$k.'" '.$btnStatus.'></td>
-            <td colspan="4"><strong>'.$v.'</strong></td>
-        </tr>';
-    foreach ($encuestas[$k] as $vv) {
-        $icon      = "icon-check";
-        $btnStatus = "disabled";
-        $btnClass  = "btn-success";
-        $trClass   = "";
-        if(in_array($vv["encID"], $_SESSION["encuestas"])) {
-            $icon      = "icon-check-empty";
-            $btnStatus = "";
-            $btnClass  = "btn-default";
-            $trClass   = "unchecked";
-        }
-        $link = "";
-        if($vv["fuente"] != "")
-            $link = '<a href="'.$vv["fuente"].'" target="_blank"><i class="icon-link"></i></a>';
-        $data["tabla"] .= '
-        <tr class="tr-enc '.$trClass.' e-'.$vv["encID"].'" data-clase="e-'.$vv["encID"].'">
-            <td></td>
-            <td><button type="button" class="btn btn-xs '.$btnClass.' enc-check"><i class="'.$icon.'"></i></button><input type="hidden" name="encuestas[]" value="'.$vv["encID"].'" '.$btnStatus.'></td>
-            <td>'.Funciones::fecha($vv["fecha"]).'</td>
-            <td>'.$vv["poblacion"].'</td>
-            <td>'.$link.'</td>
-        </tr>';
+            <td class="encuestadora tr-encs '.$trClass.' er-'.$k.'" data-clase="er-'.$k.'"><button type="button" class="btn btn-xs '.$btnClass.' enc-check encs-check"><i class="'.$icon.'"></i></button><input type="hidden" name="encuestadoras[]" value="'.$k.'" '.$btnStatus.'> <strong>'.$v.'</strong></td>';
+    if($i == ($total-1)) {
+        for ($j=0; $j < 4-($total % 4); $j++)
+            $data["tabla"] .= '<td></td>';
+        $data["tabla"] .= '</tr>';
     }
+    else if(($i+1) % 4 == 0 && $i > 0)
+        $data["tabla"] .= '</tr><tr>';
+    $i++;
+    // foreach ($encuestas[$k] as $vv) {
+    //     $icon      = "icon-check";
+    //     $btnStatus = "disabled";
+    //     $btnClass  = "btn-success";
+    //     $trClass   = "";
+    //     if(in_array($vv["encID"], $_SESSION["encuestas"])) {
+    //         $icon      = "icon-check-empty";
+    //         $btnStatus = "";
+    //         $btnClass  = "btn-default";
+    //         $trClass   = "unchecked";
+    //     }
+    //     $link = "";
+    //     if($vv["fuente"] != "")
+    //         $link = '<a href="'.$vv["fuente"].'" target="_blank"><i class="icon-link"></i></a>';
+    //     $data["tabla"] .= '
+    //     <tr class="tr-enc '.$trClass.' e-'.$vv["encID"].'" data-clase="e-'.$vv["encID"].'">
+    //         <td></td>
+    //         <td><button type="button" class="btn btn-xs '.$btnClass.' enc-check"><i class="'.$icon.'"></i></button><input type="hidden" name="encuestas[]" value="'.$vv["encID"].'" '.$btnStatus.'></td>
+    //         <td>'.Funciones::fecha($vv["fecha"]).'</td>
+    //         <td>'.$vv["poblacion"].'</td>
+    //         <td>'.$link.'</td>
+    //     </tr>';
+    // }
 }
 $data["tabla"] .= '
     </tbody>
