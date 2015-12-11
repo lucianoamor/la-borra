@@ -88,7 +88,7 @@ foreach ($encuestadoras as $k => $v) {
         $trClass   = "unchecked";
     }
     $data["tabla"] .= '
-            <td class="encuestadora tr-encs '.$trClass.' er-'.$k.'" data-clase="er-'.$k.'"><button type="button" class="btn btn-xs '.$btnClass.' enc-check encs-check"><i class="'.$icon.'"></i></button><input type="hidden" name="encuestadoras[]" value="'.$k.'" '.$btnStatus.'> <strong>'.$v.'</strong></td>';
+            <td class="encuestadora tr-encs '.$trClass.' er-'.$k.'" data-clase="er-'.$k.'" data-nenc="'.count($encuestas[$k]).'"><button type="button" class="btn btn-xs '.$btnClass.' enc-check encs-check"><i class="'.$icon.'"></i></button><input type="hidden" name="encuestadoras[]" value="'.$k.'" '.$btnStatus.'> <strong>'.$v.'</strong> <span>['.count($encuestas[$k]).']</span></td>';
     if($i == ($total-1)) {
         for ($j=0; $j < 4-($total % 4); $j++)
             $data["tabla"] .= '<td></td>';

@@ -76,8 +76,10 @@ $(document).ready(function() {
     .on('mouseleave', 'tbody:first tr', function () {
         d3.selectAll('.circleSelected')
             .attr("r", radio)
-            .attr("stroke-width", stroke)
             .classed("circleSelected", false);
+        d3.selectAll('.lineSelected')
+            .attr("stroke-width", stroke)
+            .classed("lineSelected", false);
     });
 
     $('.tabla-resultados').on('click', '.btn-hide-circles', function(event) {
@@ -167,7 +169,12 @@ function tablaEncuestas(idE) {
     }, 'json');
 }
 function updNEncuestas() {
-    $('.nEnc').html($('input[name="encuestas[]"]:disabled').length);
+    // $('.nEnc').html($('input[name="encuestas[]"]:disabled').length);
+    var n = 0;
+    $('.encuestas td.encuestadora').not('.unchecked').each(function() {
+        n += parseInt($(this).attr('data-nenc'), 10);
+    });
+    $('.nEnc').html(n);
 }
 
 // url > html5 browsers
@@ -305,8 +312,10 @@ svg.append("g")
 function tablaOver(clase) {
     d3.selectAll('circle.' + clase)
         .attr("r", radio*1.6)
-        .attr("stroke-width", stroke*2)
         .classed("circleSelected", true);
+    d3.selectAll('.line.' + clase)
+        .attr("stroke-width", stroke*2)
+        .classed("lineSelected", true);
 };
 
 function circleOver(t) {
@@ -321,24 +330,32 @@ function circleOver(t) {
         claseEncs = clases.filter(function(d) {
             return d.indexOf('er-') > -1;
         });
-    $('.img[data-clase="'+ claseCandidato[0] +'"]').parents('tr').addClass('hover');
-    $('.simplebar-scroll-content').animate({
-        scrollTop: $('.img[data-clase="'+ claseCandidato[0] +'"]')[0].y - 6
-    }, 1000);
+    if(claseCandidato[0]) {
+        $('.img[data-clase="'+ claseCandidato[0] +'"]').parents('tr').addClass('hover');
+        $('.simplebar-scroll-content').animate({
+            scrollTop: $('.img[data-clase="'+ claseCandidato[0] +'"]')[0].y - 6
+        }, 1000);
+    }
     $('.encuestas td.' + claseEncs[0] + ', .encuestas td.' + claseEnc[0]).addClass('hover');
     d3.selectAll('circle.' + claseCandidato[0])
         .attr("r", radio*1.6)
         .classed("circleSelected", true);
+    d3.selectAll('.line.' + claseCandidato[0])
+        .attr("stroke-width", stroke*2)
+        .classed("lineSelected", true);
     item
         .attr("r", radio*2.2)
         .style("opacity", 1);
 }
 
 function circleOut() {
-    d3.selectAll('circle.circleSelected')
+    d3.selectAll('.circleSelected')
         .attr("r", radio)
         .style("opacity", opacity)
         .classed("circleSelected", false);
+    d3.selectAll('.lineSelected')
+        .attr("stroke-width", stroke)
+        .classed("lineSelected", false);
     $('.img').parents('tr').removeClass('hover');
     $('.encuestas td').removeClass('hover');
 }
