@@ -86,7 +86,7 @@ $(document).ready(function() {
             icon = $(this).children('i');
         if(icon.hasClass('icon-check')) {
             icon.removeClass('icon-check').addClass('icon-check-empty');
-            d3.selectAll('circle.c-' + cID)
+            d3.selectAll('circle.c-' + cID + ':not(.resultado)')
                 .classed("hidden", true);
         } else {
             icon.removeClass('icon-check-empty').addClass('icon-check');
