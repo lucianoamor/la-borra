@@ -197,9 +197,7 @@ foreach ($poblaciones as $k => $v) {
             </div>
         </div>
         <div class="col-sm-6">
-            <div class="row tile tooltip-fijo">
-                tooltip
-            </div>
+            <div class="row tile tooltip-fijo"></div>
             <div class="row tile grafico">
                 <div class="borra" id="borra"></div>
             </div>
