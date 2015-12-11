@@ -132,7 +132,7 @@ foreach ($poblaciones as $k => $v) {
     </div>
     <div class="row">
         <div class="col-sm-5 tile tabla">
-            <table class="table table-hover tabla-resultados">
+            <table class="table table-hover tabla-head">
                 <thead>
                 <tr>
                     <th></th>
@@ -146,7 +146,14 @@ foreach ($poblaciones as $k => $v) {
                     <th class="resultado th-col"><span title="resultado final" class="tooltip-trigger">R<br/><span class="unidad">%</span></span></th>
                 </tr>
                 </thead>
-                <tbody></tbody>
+            </table>
+            <div class="tabla-inner simplebar">
+                <table class="table table-hover tabla-resultados">
+                    <tbody></tbody>
+                </table>
+            </div>
+            <!--
+            <table class="table table-hover">
                 <tfoot>
                     <tr>
                         <td colspan="9">
@@ -191,6 +198,7 @@ foreach ($poblaciones as $k => $v) {
                     </tr>
                 </tfoot>
             </table>
+             -->
         </div>
         <div class="col-xs-7 tile grafico">
             <div class="borra" id="borra"></div>
@@ -209,13 +217,8 @@ var idE   = '<?php echo $idE ?>',
 <script src="js/d3.min.js"></script>
 <script src="js/d3-tip.js"></script>
 <script src="js/regression.min.js"></script>
+<script src="js/simplebar.min.js"></script>
 <script src="data/<?php echo $idE ?>.json"></script>
 <script src="js/chart.js"></script>
-<script>
-$('.img').popover({
-    trigger: 'hover',
-    html   : true
-});
-</script>
 </body>
 </html>

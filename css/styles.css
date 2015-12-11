@@ -92,7 +92,10 @@ nav {
 
 .tabla {
     padding: 5px;
-    border: 0;
+}
+.tabla .tabla-inner {
+    height: 390px;
+    overflow: hidden;
 }
 .tabla th {
     text-align: center;
@@ -109,7 +112,8 @@ nav {
 .tabla th.prediccion span {
     color: #ddd;
 }
-.tabla th.th-col {
+.tabla th.th-col,
+.tabla td.td-col {
     width: 10%;
 }
 .tabla th.th-col.img {

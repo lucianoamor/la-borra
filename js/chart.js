@@ -128,10 +128,20 @@ $(document).ready(function() {
         html: true,
         selector: '.img'
     });
+    $('.img').popover({
+        trigger: 'hover',
+        html   : true
+    });
 
-    $('.tabla-resultados').tooltip({
+    $('.tabla-head').tooltip({
         selector: '.tooltip-trigger',
         placement: 'bottom'
+    });
+
+    // simplebar
+    $('.tabla-inner').simplebar();
+    $(window).resize(function() {
+        $('.tabla-inner').simplebar('recalculate');
     });
 
     // ini

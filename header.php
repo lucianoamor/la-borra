@@ -13,6 +13,7 @@
 <link rel="shortcut icon" href="favicon.ico" />
 <link href="css/bootstrap.min.css" rel="stylesheet" />
 <link href="css/font-awesome.min.css" rel="stylesheet">
+<link href="css/simplebar.css" rel="stylesheet">
 <link href="css/styles.css" rel="stylesheet" />
 <link href="https://fonts.googleapis.com/css?family=Ropa+Sans|Open+Sans" rel="stylesheet" type="text/css">
 </head>

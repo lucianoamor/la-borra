@@ -126,14 +126,14 @@ foreach ($avg as $k => $v) {
         <td class="text-center">
             <img src="'.$candidatos[$k]["imagen"].'" title="'.$candidatos[$k]["nombre"].'" alt="'.$candidatos[$k]["nombre"].'" class="img" style="border-color:#'.$candidatos[$k]["color"].';" data-content="<small>'.$candidatos[$k]["agrupacion"].'</small>" data-clase="c-'.$k.'" />
         </td>
-        <td class="text-center">'.$v.'</td>
-        <td class="text-center">'.$min[$k].'</td>
-        <td class="text-center">'.$max[$k].'</td>
-        <td class="text-center">'.$cv[$k].'</td>
-        <td class="text-center">'.$n1[$k].'</td>
-        <td class="text-center">'.$n[$k].'</td>
-        <td class="text-center"><button type="button" class="btn btn-default btn-xs btn-hide-circles" data-candidato="'.$k.'"><i class="icon-check"></i></button> <button type="button" class="btn btn-default btn-xs btn-hide-lines" data-candidato="'.$k.'"><i class="icon-check"></i></button></td>
-        <td class="resultado text-center">'.$resultados[$k].'</td>
+        <td class="text-center td-col">'.$v.'</td>
+        <td class="text-center td-col">'.$min[$k].'</td>
+        <td class="text-center td-col">'.$max[$k].'</td>
+        <td class="text-center td-col">'.$cv[$k].'</td>
+        <td class="text-center td-col">'.$n1[$k].'</td>
+        <td class="text-center td-col">'.$n[$k].'</td>
+        <td class="text-center td-col"><button type="button" class="btn btn-default btn-xs btn-hide-circles" data-candidato="'.$k.'"><i class="icon-check"></i></button> <button type="button" class="btn btn-default btn-xs btn-hide-lines" data-candidato="'.$k.'"><i class="icon-check"></i></button></td>
+        <td class="resultado text-center td-col">'.$resultados[$k].'</td>
     </tr>';
 }
 
