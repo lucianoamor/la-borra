@@ -330,8 +330,8 @@ function circleOver(t) {
         claseEncs = clases.filter(function(d) {
             return d.indexOf('er-') > -1;
         });
-    if(claseCandidato[0]) {
         $('.img[data-clase="'+ claseCandidato[0] +'"]').parents('tr').addClass('hover');
+    if($('.img[data-clase="'+ claseCandidato[0] +'"]')[0]) {
         $('.simplebar-scroll-content').animate({
             scrollTop: $('.img[data-clase="'+ claseCandidato[0] +'"]')[0].y - 6
         }, 1000);
