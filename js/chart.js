@@ -68,10 +68,38 @@ $(document).ready(function() {
         updateChart($('.form-filtros'));
     });
 
+    $('.encuestas').on('click', '.btn-enc-todas', function(event) {
+        event.preventDefault();
+        if($('.enc-check').parent('td:not(".unchecked")').length === $('.enc-check').length) {
+            return;
+        }
+        $('.enc-check').siblings('input').prop('disabled', true);
+        $('.enc-check').children('i').removeClass().addClass('icon-check');
+        $('.enc-check').removeClass('btn-default').addClass('btn-success');
+        $('.enc-check').parent('td').removeClass('unchecked');
+        tablaResultados(idE);
+        updNEncuestas();
+        updateChart($('.form-filtros'));
+    });
+    $('.encuestas').on('click', '.btn-enc-ninguna', function(event) {
+        event.preventDefault();
+        if($('.enc-check').parent('td.unchecked').length === $('.enc-check').length) {
+            return;
+        }
+        $('.enc-check').siblings('input').prop('disabled', false);
+        $('.enc-check').children('i').removeClass().addClass('icon-check-empty');
+        $('.enc-check').removeClass('btn-success').addClass('btn-default');
+        $('.enc-check').parent('td').addClass('unchecked');
+        tablaResultados(idE);
+        updNEncuestas();
+        updateChart($('.form-filtros'));
+    });
+
     $('.tabla-resultados')
-    .on('mouseenter', 'tbody:first tr', function () {
+    .on('mouseenter', 'tbody:first tr:not(".no-over")', function () {
         var clase = $(this).find('.img').attr('data-clase');
         tablaOver(clase);
+        tablaResultadosOver(clase);
     })
     .on('mouseleave', 'tbody:first tr', function () {
         d3.selectAll('.circleSelected')
@@ -168,6 +196,7 @@ function tablaEncuestas(idE) {
     $('.encuestas').html('<p class="text-center"><i class="icon-spinner icon-spin icon-2x"></i></p>');
     $.post('encuestas.php', $('.form-filtros').serialize() + '&id=' + idE, function(data) {
         $('.encuestas').html(data.tabla);
+        updNEncuestas();
     }, 'json');
 }
 function updNEncuestas() {
@@ -316,6 +345,8 @@ function tablaOver(clase) {
     d3.selectAll('circle.' + clase)
         .attr("r", radio*1.6)
         .classed("circleSelected", true);
+};
+function tablaResultadosOver(clase) {
     d3.selectAll('.line')
         .style("opacity", 1);
     d3.selectAll('.line.' + clase)

@@ -65,11 +65,9 @@ if($res->num_rows == 0) {
 
 // checkboxs son inputs disabled. si uncheck, enable (manda por post solo los unchecked)
 
-$txtEnc = "encuestas";
-if($res->num_rows == 1)
-    $txtEnc = "encuesta";
 $data["tabla"] .= '
-<p class="pull-left"><span class="nEnc">'.$res->num_rows.'</span> '.$txtEnc.'</p>
+<p class="pull-left"><span class="nEnc"></span>encuestas</p>
+<p class="pull-right"><button type="button" class="btn btn-link btn-enc-todas">Todas</button> | <button type="button" class="btn btn-link btn-enc-ninguna">Ninguna</button></p>
 <table class="table table-condensed">
     <tbody>';
 $i = 0;

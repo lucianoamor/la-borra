@@ -262,6 +262,11 @@ nav {
 .encuestas .encuestadora span {
     opacity: .7;
 }
+.encuestas .btn-link {
+    font-size: 12px;
+    color: #fff;
+    padding: 6px 0;
+}
 
 .popover small {
     color: #666;
