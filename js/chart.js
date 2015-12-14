@@ -80,6 +80,8 @@ $(document).ready(function() {
         d3.selectAll('.lineSelected')
             .attr("stroke-width", stroke)
             .classed("lineSelected", false);
+        d3.selectAll('.line')
+            .style("opacity", 0);
     });
 
     $('.tabla-resultados').on('click', '.btn-hide-circles', function(event) {
@@ -277,7 +279,8 @@ for (var i = 0; i < candidatosL; i++) {
             .attr("d", valueline(regresion))
             .attr("class", "line c-" + dataCandidato[0].candidatoId)
             .attr("stroke", "#" + dataCandidato[0].color)
-            .attr("stroke-width", stroke);
+            .attr("stroke-width", stroke)
+            .style("opacity", 0);
     }
 }
 
@@ -313,6 +316,8 @@ function tablaOver(clase) {
     d3.selectAll('circle.' + clase)
         .attr("r", radio*1.6)
         .classed("circleSelected", true);
+    d3.selectAll('.line')
+        .style("opacity", 1);
     d3.selectAll('.line.' + clase)
         .attr("stroke-width", stroke*2)
         .classed("lineSelected", true);
@@ -526,7 +531,8 @@ function updateChart(filtros) {
         svg.select(".line.c-" + dataCandidato[0].candidatoId).transition()
             .duration(750)
                 .attr("d", valueline(regresion))
-                .style("opacity", opacity);
+                // .style("opacity", opacity)
+                ;
     }
     var candidatosL = candidatosExit.length;
     for (var i = 0; i < candidatosL; i++) {
