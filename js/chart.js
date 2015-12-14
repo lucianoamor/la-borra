@@ -347,7 +347,7 @@ function tablaOver(clase) {
         .classed("circleSelected", true);
 };
 function tablaResultadosOver(clase) {
-    d3.selectAll('.line')
+    d3.selectAll('.line.line-ok')
         .style("opacity", 1);
     d3.selectAll('.line.' + clase)
         .attr("stroke-width", stroke*2)
@@ -561,15 +561,17 @@ function updateChart(filtros) {
         }
         svg.select(".line.c-" + dataCandidato[0].candidatoId).transition()
             .duration(750)
-                .attr("d", valueline(regresion))
-                // .style("opacity", opacity)
-                ;
+                .attr("d", valueline(regresion));
+        svg.select(".line.c-" + dataCandidato[0].candidatoId)
+            .classed("line-ok", true);
     }
     var candidatosL = candidatosExit.length;
     for (var i = 0; i < candidatosL; i++) {
         svg.select(".line.c-" + candidatosExit[i]).transition()
             .duration(750)
                 .style("opacity", 0);
+        svg.select(".line.c-" + candidatosExit[i])
+            .classed("line-ok", false);
     }
 }
 
