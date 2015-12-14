@@ -101,7 +101,7 @@ $(document).ready(function() {
         tablaOver(clase);
         tablaResultadosOver(clase);
     })
-    .on('mouseleave', 'tbody:first tr', function () {
+    .on('mouseleave', 'tbody:first tr:not(".no-over")', function () {
         d3.selectAll('.circleSelected')
             .attr("r", radio)
             .classed("circleSelected", false);
@@ -143,11 +143,11 @@ $(document).ready(function() {
     });
 
     $('.encuestas')
-    .on('mouseenter', 'td', function () {
+    .on('mouseenter', 'td:not(".no-over")', function () {
         var clase = $(this).attr('data-clase');
         tablaOver(clase);
     })
-    .on('mouseleave', 'td', function () {
+    .on('mouseleave', 'td:not(".no-over")', function () {
         d3.selectAll('.circleSelected')
             .attr("r", radio)
             .attr("stroke-width", stroke)

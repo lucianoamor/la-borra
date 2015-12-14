@@ -234,6 +234,9 @@ nav {
 .encuestas td.hover {
     background-color: #019F00;
 }
+.encuestas td.no-over:hover {
+    background-color: transparent;
+}
 .encuestas table td.unchecked {
     opacity: .7;
     background-color: #8B9F8B;
