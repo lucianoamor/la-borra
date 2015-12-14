@@ -318,6 +318,7 @@ function tablaOver(clase) {
         .classed("lineSelected", true);
 };
 
+var claseCandidatoLast = '';
 function circleOver(t) {
     var item   = d3.select(t),
         clases = item.attr("class").split(' '),
@@ -330,11 +331,15 @@ function circleOver(t) {
         claseEncs = clases.filter(function(d) {
             return d.indexOf('er-') > -1;
         });
-        $('.img[data-clase="'+ claseCandidato[0] +'"]').parents('tr').addClass('hover');
-    if($('.img[data-clase="'+ claseCandidato[0] +'"]')[0]) {
+    $('.img[data-clase="'+ claseCandidato[0] +'"]').parents('tr').addClass('hover');
+    if(claseCandidato[0] !== claseCandidatoLast) {
+        claseCandidatoLast = claseCandidato[0];
+        $('.simplebar-scroll-content').prop({
+            scrollTop: 0
+        });
         $('.simplebar-scroll-content').animate({
-            scrollTop: $('.img[data-clase="'+ claseCandidato[0] +'"]')[0].y - 6
-        }, 1000);
+            scrollTop: $('.img[data-clase="'+ claseCandidato[0] +'"]').position().top - 6
+        }, 100);
     }
     $('.encuestas td.' + claseEncs[0] + ', .encuestas td.' + claseEnc[0]).addClass('hover');
     d3.selectAll('circle.' + claseCandidato[0])
@@ -481,7 +486,8 @@ function updateChart(filtros) {
 
     // regresion polinomial
     var dataL = dataFiltered.length,
-        candidatos = [];
+        candidatos = [],
+        regGrado = 3; // toma de input
     for (var i = 0; i < dataL; i++) {
         if(candidatos.indexOf(dataFiltered[i].candidatoId) === -1 && dataFiltered[i].esRes === 0) {
             candidatos.push(dataFiltered[i].candidatoId);
@@ -509,7 +515,7 @@ function updateChart(filtros) {
         dataCandidato.forEach(function(d) {
             dataRegresion.push([d.fecha.getTime(), d.resultado]);
         });
-        var regresion = regression('polynomial', dataRegresion, 3).points;
+        var regresion = regression('polynomial', dataRegresion, regGrado).points;
         regresion.forEach(function(d) {
             d[0] = new Date(d[0]);
         });
