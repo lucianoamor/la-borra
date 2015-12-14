@@ -139,7 +139,7 @@ foreach ($avg as $k => $v) {
 
 if($data["tabla"] == "")
     $data["tabla"] = '
-    <tr>
+    <tr class="no-over">
         <td colspan="9" class="text-center">No hay encuestas que coincidan con los filtros elegidos</td>
     </tr>';
 echo json_encode($data);
