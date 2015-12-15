@@ -241,6 +241,9 @@ nav {
     font-size: 1.2em;
     margin: 5px 0;
 }
+.tt-encuesta .encuestadora a {
+    color: #9F0400;
+}
 
 .encuestas {
     background-color: #015F00;
