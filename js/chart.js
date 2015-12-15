@@ -541,7 +541,7 @@ function updateChart(filtros) {
         })
         .attr("width", function(d) {
             if(d.muestra > 0) {
-                return 10;
+                return radio*2;
             } else {
                 return 0;
             }
@@ -549,7 +549,7 @@ function updateChart(filtros) {
         .attr("height", 0)
         .style("opacity", 0)
         .style("fill", function(d) { return '#' + d.color })
-        .attr("transform", "translate(-5,0)")
+        .attr("transform", "translate(-" + radio + ",0)")
         .classed('margen', true)
       .transition()
         .duration(750)
@@ -568,7 +568,7 @@ function updateChart(filtros) {
         })
         .attr("width", function(d) {
             if(d.muestra > 0) {
-                return 10;
+                return radio*2;
             } else {
                 return 0;
             }
@@ -576,7 +576,7 @@ function updateChart(filtros) {
         .attr("height", 0)
         .style("opacity", 0)
         .style("fill", function(d) { return '#' + d.color })
-        .attr("transform", "translate(-5,0)")
+        .attr("transform", "translate(-" + radio + ",0)")
         .classed('margen', true)
       .transition()
         .duration(750)
