@@ -4,7 +4,7 @@
 // $bd = conectar();
 // echo "<pre>";
 $json = array();
-$sql = "select ele.id, enc.fecha, enc.idAT as encuestaId, res.intencion, encs.nombre as encuestadora, encs.idAT as encuestadoraId, pob.nombre as poblacion, pob.idAT as poblacionId, agr.color, can.idAT as candidatoId, enc.esResultado from elecciones as ele left join encuestas as enc on enc.eleccion = ele.idAT left join resultados as res on res.encuesta = enc.idAT left join encuestadoras as encs on encs.idAT = enc.encuestadora left join poblacion as pob on pob.idAT = enc.poblacion left join candidatos as can on can.idAT = res.candidato left join agrupaciones as agr on agr.idAT = can.agrupacion order by ele.id";
+$sql = "select ele.id, enc.fecha, enc.idAT as encuestaId, enc.muestra, res.intencion, encs.nombre as encuestadora, encs.idAT as encuestadoraId, pob.nombre as poblacion, pob.idAT as poblacionId, agr.color, can.idAT as candidatoId, enc.esResultado from elecciones as ele left join encuestas as enc on enc.eleccion = ele.idAT left join resultados as res on res.encuesta = enc.idAT left join encuestadoras as encs on encs.idAT = enc.encuestadora left join poblacion as pob on pob.idAT = enc.poblacion left join candidatos as can on can.idAT = res.candidato left join agrupaciones as agr on agr.idAT = can.agrupacion order by ele.id";
 $res = $bd->query($sql);
 while($fila = $res->fetch_assoc()) {
     $json[$fila["id"]][] = array(
@@ -16,6 +16,7 @@ while($fila = $res->fetch_assoc()) {
         "esRes"          => (int)$fila["esResultado"],
         "candidatoId"    => $fila["candidatoId"],
         "encuestaId"     => $fila["encuestaId"],
+        "muestra"        => $fila["muestra"],
         "encuestadoraId" => $fila["encuestadoraId"],
         "poblacionId"    => $fila["poblacionId"]
     );
