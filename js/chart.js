@@ -490,9 +490,11 @@ function updateChart(filtros) {
             .style("opacity", 0)
             .remove();
 
-    svg.selectAll()
+    var ent = svg.selectAll()
         .data(dataFiltered)
-      .enter().append("circle")
+      .enter();
+
+    ent.append("circle")
         .attr("cx", function(d) { return x(d.fecha); })
         .attr("cy", function(d) { return y(d.resultado); })
         .attr("class", function(d) {
@@ -519,6 +521,67 @@ function updateChart(filtros) {
             .duration(750)
             .style("opacity", opacity)
             .attr("r", radio);
+    // intervalo de confianza
+    svg.selectAll("rect.margen")
+        .transition()
+            .duration(750)
+            .attr("height", 0)
+            .style("opacity", 0)
+            .remove();
+
+    ent.append('rect')
+        .attr("x", function(d) { return x(d.fecha); })
+        .attr("y", function(d) {
+            if(d.muestra > 0) {
+                var margen = Math.sqrt(.96 / d.muestra) * 100;
+                return y(d.resultado + margen);
+            } else {
+                return y(d.resultado);
+            }
+        })
+        .attr("width", function(d) {
+            if(d.muestra > 0) {
+                return 10;
+            } else {
+                return 0;
+            }
+        })
+        .attr("height", 0)
+        .style("opacity", 0)
+        .style("fill", function(d) { return '#' + d.color })
+        .attr("transform", "translate(-5,0)")
+        .classed('margen', true)
+      .transition()
+        .duration(750)
+        .style("opacity", opacity)
+        .attr("height", 1);
+
+    ent.append('rect')
+        .attr("x", function(d) { return x(d.fecha); })
+        .attr("y", function(d) {
+            if(d.muestra > 0) {
+                var margen = Math.sqrt(.96 / d.muestra) * 100;
+                return y(d.resultado - margen);
+            } else {
+                return y(d.resultado);
+            }
+        })
+        .attr("width", function(d) {
+            if(d.muestra > 0) {
+                return 10;
+            } else {
+                return 0;
+            }
+        })
+        .attr("height", 0)
+        .style("opacity", 0)
+        .style("fill", function(d) { return '#' + d.color })
+        .attr("transform", "translate(-5,0)")
+        .classed('margen', true)
+      .transition()
+        .duration(750)
+        .style("opacity", opacity)
+        .attr("height", 1);
 
     // regresion polinomial
     var dataL = dataFiltered.length,
