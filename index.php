@@ -198,11 +198,11 @@ foreach ($poblaciones as $k => $v) {
         </div>
         <div class="col-sm-6">
             <div class="row tile tooltip-fijo">
-                <div class="col-sm-4 tt-candidato">
+                <div class="col-xs-4 tt-candidato">
                 </div>
-                <div class="col-sm-4 tt-intencion">
+                <div class="col-xs-4 tt-intencion">
                 </div>
-                <div class="col-sm-4 tt-encuesta">
+                <div class="col-xs-4 tt-encuesta">
                 </div>
             </div>
             <div class="row tile grafico">

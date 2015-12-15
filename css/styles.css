@@ -235,6 +235,7 @@ nav {
 }
 .tt-candidato img {
     width: 100%;
+    max-width: 256px;
 }
 .tt-encuesta .encuestadora {
     font-weight: bold;
