@@ -197,7 +197,14 @@ foreach ($poblaciones as $k => $v) {
             </div>
         </div>
         <div class="col-sm-6">
-            <div class="row tile tooltip-fijo"></div>
+            <div class="row tile tooltip-fijo">
+                <div class="col-sm-4 tt-candidato">
+                </div>
+                <div class="col-sm-4 tt-intencion">
+                </div>
+                <div class="col-sm-4 tt-encuesta">
+                </div>
+            </div>
             <div class="row tile grafico">
                 <div class="borra" id="borra"></div>
             </div>
@@ -218,7 +225,6 @@ var idE   = '<?php echo $idE ?>',
 <script src="js/jquery-1.11.3.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 <script src="js/d3.min.js"></script>
-<script src="js/d3-tip.js"></script>
 <script src="js/regression.min.js"></script>
 <script src="js/simplebar.min.js"></script>
 <script src="data/<?php echo $idE ?>.json"></script>

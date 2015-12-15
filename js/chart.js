@@ -200,7 +200,6 @@ function tablaEncuestas(idE) {
     }, 'json');
 }
 function updNEncuestas() {
-    // $('.nEnc').html($('input[name="encuestas[]"]:disabled').length);
     var n = 0;
     $('.encuestas td.encuestadora').not('.unchecked').each(function() {
         n += parseInt($(this).attr('data-nenc'), 10);
@@ -313,24 +312,6 @@ for (var i = 0; i < candidatosL; i++) {
     }
 }
 
-// tip
-var formatDateTip = d3.time.format("%d/%m/%Y");
-
-var tip = d3.tip()
-  .attr('class', 'd3-tip')
-  .offset([-10, 0])
-  .html(function(d) {
-    var t = '<strong>' + d.resultado + '%</strong>' + "<br/>" + formatDateTip(d.fecha) + "<br/>";
-    if(d.esRes === 0) {
-        t += "<em>" + d.encuestadora + "</em><br/>" + d.poblacion;
-    } else {
-        t += "<em>" + "Resultado" + "</em>";
-    }
-    return t;
-})
-
-svg.call(tip);
-
 svg.append("g")
     .attr("class", "axis xAxis")
     .attr("transform", "translate(0," + y.range()[0] + ")")
@@ -381,11 +362,14 @@ function circleOver(t) {
     d3.selectAll('circle.' + claseCandidato[0])
         .attr("r", radio*1.6)
         .classed("circleSelected", true);
+    d3.selectAll('circle')
+        .classed("lastCircleSelected", false);
     d3.selectAll('.line.' + claseCandidato[0])
         .attr("stroke-width", stroke*2)
         .classed("lineSelected", true);
     item
         .attr("r", radio*2.2)
+        .classed("lastCircleSelected", true)
         .style("opacity", 1);
 }
 
@@ -456,6 +440,8 @@ function updateChart(filtros) {
         // }
     }
 
+    var formatDateTip = d3.time.format("%d/%m/%Y");
+
     // ejes
     var interv = d3.time.month,
         nTicksX = interv.range(d3.min(dataFiltered, function(d) { return d.fecha; }), d3.max(dataFiltered, function(d) { return d.fecha; }), 1).length,
@@ -510,11 +496,13 @@ function updateChart(filtros) {
         .style("opacity", 0)
         .style("fill", function(d) { return '#' + d.color })
         .on('mouseover', function(d) {
-            tip.show(d);
             circleOver(this, d);
+            // tooltip
+            d3.select('.tt-intencion').html('<p class="intencion" style="border-color: #' + d.color + ';">' + d.resultado + ' %</p><p class="candidato">' + d.candidato + '</p><p class="agrupacion">' + d.agrupacion + '</p>');
+            d3.select('.tt-candidato').html('<p><img src="' + d.imagen + '" alt="' + d.candidato +'" /></p>');
+            d3.select('.tt-encuesta').html('<p class="fecha">' + formatDateTip(d.fecha) + '</p><p class="encuestadora"><a href="' + d.fuente +'" target="_blank">' + ((d.esRes === 1) ? 'Resultado' : d.encuestadora) + '</a></p><p class="poblacion">' + ((d.esRes === 1) ? '' : d.poblacion) + '</p>');
         })
         .on('mouseout', function(d) {
-            tip.hide(d);
             circleOut(this, d);
         })
         .transition()
