@@ -498,7 +498,7 @@ function updateChart(filtros) {
         .on('mouseover', function(d) {
             circleOver(this, d);
             // tooltip
-            d3.select('.tt-intencion').html('<p class="intencion" style="border-color: #' + d.color + ';">' + d.resultado + ' %</p><p class="candidato">' + d.candidato + '</p><p class="agrupacion">' + d.agrupacion + '</p>');
+            d3.select('.tt-intencion').html('<p class="intencion" style="border-color: #' + d.color + ';">' + (x = d.resultado.toString().replace(/\./g, ',')) + ' %</p><p class="candidato">' + d.candidato + '</p><p class="agrupacion">' + d.agrupacion + '</p>');
             d3.select('.tt-candidato').html('<p><img src="' + d.imagen + '" alt="' + d.candidato +'" /></p>');
             d3.select('.tt-encuesta').html('<p class="fecha">' + formatDateTip(d.fecha) + '</p><p class="encuestadora"><a href="' + d.fuente +'" target="_blank">' + ((d.esRes === 1) ? 'Resultado' : d.encuestadora) + '</a></p><p class="poblacion">' + ((d.esRes === 1) ? '' : d.poblacion) + '</p>');
         })
