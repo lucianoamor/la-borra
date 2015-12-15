@@ -118,11 +118,11 @@ $(document).ready(function() {
             icon = $(this).children('i');
         if(icon.hasClass('icon-check')) {
             icon.removeClass('icon-check').addClass('icon-check-empty');
-            d3.selectAll('circle.c-' + cID + ':not(.resultado)')
+            d3.selectAll('circle.c-' + cID + ':not(.resultado), .margen.c-' + cID)
                 .classed("hidden", true);
         } else {
             icon.removeClass('icon-check-empty').addClass('icon-check');
-            d3.selectAll('circle.c-' + cID + '.hidden')
+            d3.selectAll('circle.c-' + cID + '.hidden, .margen.c-' + cID + '.hidden')
                 .classed("hidden", false);
         }
     });
@@ -538,7 +538,7 @@ function updateChart(filtros) {
         .style("opacity", 0)
         .style("fill", function(d) { return '#' + d.color })
         .attr("transform", "translate(-" + radio + ",0)")
-        .classed('margen', true)
+        .attr('class', function(d) { return 'c-' + d.candidatoId + ' margen'; })
       .transition()
         .duration(750)
         .style("opacity", opacity)
@@ -565,7 +565,7 @@ function updateChart(filtros) {
         .style("opacity", 0)
         .style("fill", function(d) { return '#' + d.color })
         .attr("transform", "translate(-" + radio + ",0)")
-        .classed('margen', true)
+        .attr('class', function(d) { return 'c-' + d.candidatoId + ' margen'; })
       .transition()
         .duration(750)
         .style("opacity", opacity)
