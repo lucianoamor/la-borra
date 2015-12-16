@@ -245,6 +245,30 @@ nav {
 .tt-encuesta .encuestadora a {
     color: #9F0400;
 }
+.tooltip-fijo .config {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+}
+.tooltip-fijo .config button {
+    padding: 2px 6px;
+}
+.tooltip-fijo .dropdown-menu {
+    right: 0;
+    left: auto;
+    padding: 10px;
+    box-shadow: none;
+    font-size: 12px;
+}
+.tooltip-fijo .dropdown-menu select {
+    font-size: 12px;
+    width: auto;
+    height: auto;
+    padding: 2px;
+}
+.tooltip-fijo .dropdown-menu .checkbox {
+    margin-top: 0;
+}
 
 .encuestas {
     background-color: #015F00;

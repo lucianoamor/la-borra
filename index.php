@@ -204,6 +204,33 @@ foreach ($poblaciones as $k => $v) {
                 </div>
                 <div class="col-xs-4 tt-encuesta">
                 </div>
+                <div class="config">
+                    <button type="button" class="btn btn-success btn-config"><i class="icon-cog"></i></button>
+                    <div class="dropdown-menu hidden">
+                        <form class="form-filtros">
+                            <div class="form-group">
+                                <label>Grado de la regresión polinomial</label>
+                                <select class="form-control" name="grado">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3" selected>3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Intervalos de confianza</label>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="intervalos" value="1">
+                                        Mostrar
+                                    </label>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-info pull-right btn-config-ok">Aplicar</button>
+                        </form>
+                    </div>
+                </div>
             </div>
             <div class="row tile grafico">
                 <div class="borra" id="borra"></div>

@@ -68,6 +68,16 @@ $(document).ready(function() {
         updateChart($('.form-filtros'));
     });
 
+    $('.btn-config').click(function(event) {
+        event.preventDefault();
+        $(this).siblings('.dropdown-menu').removeClass('hidden').show();
+    });
+    $('.btn-config-ok').click(function(event) {
+        event.preventDefault();
+        $(this).parents('.dropdown-menu').addClass('hidden').hide();
+        updateChart($('.form-filtros'));
+    });
+
     $('.encuestas').on('click', '.btn-enc-todas', function(event) {
         event.preventDefault();
         if($('.enc-check').parent('td:not(".unchecked")').length === $('.enc-check').length) {
@@ -386,7 +396,9 @@ function circleOut() {
 }
 
 function updateChart(filtros) {
-    var dataFiltered = data;
+    var dataFiltered = data,
+        regGrado     = 3,
+        mostrarInt   = 0;
     if(filtros) {
         var filtrosObj = filtros.serializeFormJSON();
         if(filtrosObj.poblacion !== '') {
@@ -420,6 +432,14 @@ function updateChart(filtros) {
             });
         }
 
+        if(filtrosObj.grado) {
+            regGrado = parseInt(filtrosObj.grado, 10);
+        }
+
+        if(filtrosObj.intervalos) {
+            mostrarInt = 1;
+        }
+
         // if(filtrosObj['encuestas[]']) {
         //     if(!Array.isArray(filtrosObj['encuestas[]'])) {
         //         var encuestas = [];
@@ -440,7 +460,8 @@ function updateChart(filtros) {
         // }
     }
 
-    var formatDateTip = d3.time.format("%d/%m/%Y");
+    var formatDateTip = d3.time.format("%d/%m/%Y"),
+        ttRes;
 
     // ejes
     var interv = d3.time.month,
@@ -498,7 +519,7 @@ function updateChart(filtros) {
         .on('mouseover', function(d) {
             circleOver(this, d);
             // tooltip
-            d3.select('.tt-intencion').html('<p class="intencion" style="border-color: #' + d.color + ';">' + (x = d.resultado.toString().replace(/\./g, ',')) + ' %</p><p class="candidato">' + d.candidato + '</p><p class="agrupacion">' + d.agrupacion + '</p>');
+            d3.select('.tt-intencion').html('<p class="intencion" style="border-color: #' + d.color + ';">' + (ttRes = d.resultado.toString().replace(/\./g, ',')) + ' %</p><p class="candidato">' + d.candidato + '</p><p class="agrupacion">' + d.agrupacion + '</p>');
             d3.select('.tt-candidato').html('<p><img src="' + d.imagen + '" alt="' + d.candidato +'" /></p>');
             d3.select('.tt-encuesta').html('<p class="fecha">' + formatDateTip(d.fecha) + '</p><p class="encuestadora"><a href="' + d.fuente +'" target="_blank">' + ((d.esRes === 1) ? 'Resultado' : d.encuestadora) + '</a></p><p class="poblacion">' + ((d.esRes === 1) ? '' : d.poblacion) + '</p>');
         })
@@ -541,7 +562,7 @@ function updateChart(filtros) {
         .attr('class', function(d) { return 'c-' + d.candidatoId + ' margen'; })
       .transition()
         .duration(750)
-        .style("opacity", opacity)
+        .style("opacity", mostrarInt)
         .attr("height", 1);
 
     ent.append('rect')
@@ -568,13 +589,12 @@ function updateChart(filtros) {
         .attr('class', function(d) { return 'c-' + d.candidatoId + ' margen'; })
       .transition()
         .duration(750)
-        .style("opacity", opacity)
+        .style("opacity", mostrarInt)
         .attr("height", 1);
 
     // regresion polinomial
     var dataL = dataFiltered.length,
-        candidatos = [],
-        regGrado = 3; // toma de input
+        candidatos = [];
     for (var i = 0; i < dataL; i++) {
         if(candidatos.indexOf(dataFiltered[i].candidatoId) === -1 && dataFiltered[i].esRes === 0) {
             candidatos.push(dataFiltered[i].candidatoId);
