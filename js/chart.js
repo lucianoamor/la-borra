@@ -77,6 +77,10 @@ $(document).ready(function() {
         $(this).parents('.dropdown-menu').addClass('hidden').hide();
         updateChart($('.form-filtros'));
     });
+    $('.btn-config-cerrar').click(function(event) {
+        event.preventDefault();
+        $(this).parents('.dropdown-menu').addClass('hidden').hide();
+    });
 
     $('.encuestas').on('click', '.btn-enc-todas', function(event) {
         event.preventDefault();

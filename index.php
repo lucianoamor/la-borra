@@ -199,10 +199,13 @@ foreach ($poblaciones as $k => $v) {
         <div class="col-sm-6">
             <div class="row tile tooltip-fijo">
                 <div class="col-xs-4 tt-candidato">
+                    <p><img src="images/default.jpg" alt="" style="opacity:.5;" /></p>
                 </div>
                 <div class="col-xs-4 tt-intencion">
+                    Seleccione un círculo del gráfico para ver más información
                 </div>
                 <div class="col-xs-4 tt-encuesta">
+                    Configuración <i class="icon-chevron-right"></i>
                 </div>
                 <div class="config">
                     <button type="button" class="btn btn-success btn-config"><i class="icon-cog"></i></button>
@@ -227,7 +230,10 @@ foreach ($poblaciones as $k => $v) {
                                     </label>
                                 </div>
                             </div>
-                            <button type="button" class="btn btn-info pull-right btn-config-ok">Aplicar</button>
+                            <div class="pull-right">
+                            <button type="button" class="btn btn-danger btn-config-cerrar">Cerrar</button>
+                             <button type="button" class="btn btn-info btn-config-ok">Aplicar</button>
+                            </div>
                         </form>
                     </div>
                 </div>

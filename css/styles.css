@@ -257,7 +257,6 @@ nav {
     right: 0;
     left: auto;
     padding: 10px;
-    box-shadow: none;
     font-size: 12px;
 }
 .tooltip-fijo .dropdown-menu select {
