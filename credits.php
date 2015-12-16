@@ -1,5 +1,6 @@
 <?php
 header('Content-Type: text/html; charset=UTF-8');
+include("admin/params.php");
 include("header.php");
 ?>
     <div class="row">
