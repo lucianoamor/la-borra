@@ -228,6 +228,10 @@ nav {
     margin: 5px 0 2px;
     line-height: 1.3em;
 }
+.tt-intencion .candidato.tbl-res {
+    border-bottom: 5px solid;
+    padding-bottom: 5px;
+}
 .tt-candidato p {
     height: 137px;
     border-radius: 10px;
@@ -245,6 +249,21 @@ nav {
 .tt-encuesta .encuestadora a {
     color: #9F0400;
 }
+.tt-encuesta .subtit {
+    text-transform: uppercase;
+    padding: 5px 0 10px;
+}
+.tt-encuesta .intencion {
+    font-weight: bold;
+    font-size: 2em;
+    line-height: .3em;
+    padding-bottom: 27px;
+}
+.tt-encuesta .intencion span {
+    font-weight: normal;
+    font-size: .5em;
+}
+
 .tooltip-fijo .config {
     position: absolute;
     top: 10px;

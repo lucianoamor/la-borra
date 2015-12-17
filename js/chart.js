@@ -113,7 +113,7 @@ $(document).ready(function() {
     .on('mouseenter', 'tbody:first tr:not(".no-over")', function () {
         var clase = $(this).find('.img').attr('data-clase');
         tablaOver(clase);
-        tablaResultadosOver(clase);
+        tablaResultadosOver(clase, $(this));
     })
     .on('mouseleave', 'tbody:first tr:not(".no-over")', function () {
         d3.selectAll('.circleSelected')
@@ -341,12 +341,16 @@ function tablaOver(clase) {
         .attr("r", radio*1.6)
         .classed("circleSelected", true);
 };
-function tablaResultadosOver(clase) {
+function tablaResultadosOver(clase, e) {
     d3.selectAll('.line.line-ok')
         .style("opacity", 1);
     d3.selectAll('.line.' + clase)
         .attr("stroke-width", stroke*2)
         .classed("lineSelected", true);
+    // tooltip
+    $('.tt-intencion').html('<p class="candidato tbl-res" style="border-color: #' + e.attr('data-color') + ';">' + e.attr('data-candidato') + '</p><p class="agrupacion">' + e.attr('data-agrupacion') + '</p>');
+    $('.tt-candidato').html('<p><img src="' + e.attr('data-imagen') + '" alt="' + e.attr('data-candidato') +'" /></p>');
+    $('.tt-encuesta').html('<p class="subtit">Promedio</p><p class="intencion">' + e.attr('data-avg') + ' %</p><p class="subtit">Primero en</p><p class="intencion">' + e.attr('data-n1') + ' <span><br/>encuestas</span></p>');
 };
 
 var claseCandidatoLast = '';
