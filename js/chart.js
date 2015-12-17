@@ -347,6 +347,8 @@ function tablaResultadosOver(clase, e) {
     d3.selectAll('.line.' + clase)
         .attr("stroke-width", stroke*2)
         .classed("lineSelected", true);
+    d3.selectAll('.lastCircleSelected')
+        .classed("lastCircleSelected", false);
     // tooltip
     $('.tt-intencion').html('<p class="candidato tbl-res" style="border-color: #' + e.attr('data-color') + ';">' + e.attr('data-candidato') + '</p><p class="agrupacion">' + e.attr('data-agrupacion') + '</p>');
     $('.tt-candidato').html('<p><img src="' + e.attr('data-imagen') + '" alt="' + e.attr('data-candidato') +'" /></p>');
