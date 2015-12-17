@@ -124,7 +124,7 @@ foreach ($avg as $k => $v) {
     $data["tabla"] .= '
     <tr data-color="'.$candidatos[$k]["color"].'" data-candidato="'.$candidatos[$k]["nombre"].'" data-agrupacion="'.$candidatos[$k]["agrupacion"].'" data-avg="'.number_format($v, 1, ",", "").'" data-imagen="'.$candidatos[$k]["imagen"].'" data-n1="'.$n1[$k].' <span>de</span> '.$n[$k].'">
         <td class="text-center">
-            <img src="'.$candidatos[$k]["imagen"].'" title="'.$candidatos[$k]["nombre"].'" alt="'.$candidatos[$k]["nombre"].'" class="img" style="border-color:#'.$candidatos[$k]["color"].';" data-content="<small>'.$candidatos[$k]["agrupacion"].'</small>" data-clase="c-'.$k.'" />
+            <img src="'.$candidatos[$k]["imagen"].'" alt="'.$candidatos[$k]["nombre"].'" class="img" style="border-color:#'.$candidatos[$k]["color"].';" data-clase="c-'.$k.'" />
         </td>
         <td class="td-col">'.number_format($v, 1, ",", "").'</td>
         <td class="td-col">'.number_format($min[$k], 1, ",", "").'</td>

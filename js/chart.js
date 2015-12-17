@@ -169,15 +169,15 @@ $(document).ready(function() {
     });
 
     // popovers
-    $('.tabla-resultados').popover({
-        trigger: 'hover',
-        html: true,
-        selector: '.img'
-    });
-    $('.img').popover({
-        trigger: 'hover',
-        html   : true
-    });
+    // $('.tabla-resultados').popover({
+    //     trigger: 'hover',
+    //     html: true,
+    //     selector: '.img'
+    // });
+    // $('.img').popover({
+    //     trigger: 'hover',
+    //     html   : true
+    // });
 
     $('.tabla-head').tooltip({
         selector: '.tooltip-trigger',
