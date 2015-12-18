@@ -209,11 +209,11 @@ foreach ($poblaciones as $k => $v) {
                 </div>
                 <div class="config">
                     <button type="button" class="btn btn-success btn-config"><i class="icon-cog"></i></button>
-                    <div class="dropdown-menu hidden">
+                    <div class="dropdown-menu">
                         <form class="form-filtros">
                             <div class="form-group">
-                                <label>Grado de la regresión polinomial</label>
-                                <select class="form-control" name="grado">
+                                <label>Grado de la regresión polinomial (línea)</label>
+                                <select class="form-control" name="grado" id="grado">
                                     <option value="1">1</option>
                                     <option value="2">2</option>
                                     <option value="3" selected>3</option>
@@ -225,14 +225,10 @@ foreach ($poblaciones as $k => $v) {
                                 <label>Intervalos de confianza</label>
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" name="intervalos" value="1">
+                                        <input type="checkbox" name="intervalos" id="intervalos" value="1">
                                         Mostrar
                                     </label>
                                 </div>
-                            </div>
-                            <div class="pull-right">
-                            <button type="button" class="btn btn-danger btn-config-cerrar">Cerrar</button>
-                             <button type="button" class="btn btn-info btn-config-ok">Aplicar</button>
                             </div>
                         </form>
                     </div>

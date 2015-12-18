@@ -70,16 +70,15 @@ $(document).ready(function() {
 
     $('.btn-config').click(function(event) {
         event.preventDefault();
-        $(this).siblings('.dropdown-menu').removeClass('hidden').show();
+        $(this).siblings('.dropdown-menu').toggle();
     });
-    $('.btn-config-ok').click(function(event) {
-        event.preventDefault();
-        $(this).parents('.dropdown-menu').addClass('hidden').hide();
+    $('#grado').change(function(event) {
+        $(this).parents('.dropdown-menu').toggle();
         updateChart($('.form-filtros'));
     });
-    $('.btn-config-cerrar').click(function(event) {
-        event.preventDefault();
-        $(this).parents('.dropdown-menu').addClass('hidden').hide();
+    $('#intervalos').click(function(event) {
+        $(this).parents('.dropdown-menu').toggle();
+        updateChart($('.form-filtros'));
     });
 
     $('.encuestas').on('click', '.btn-enc-todas', function(event) {
